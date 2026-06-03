@@ -29,13 +29,13 @@ Open [http://localhost:3000](http://localhost:3000).
 
 GitHub Pages serves **static files only**. It cannot run the Next.js server, so publishing the repo root (README + source) shows the README instead of the app.
 
-1. Push to `main` — the workflow builds the app and publishes static files to the **`gh-pages`** branch.
+1. Push to `main` — the workflow builds the app and publishes static files into the **`docs/`** folder on **`main`** (source code stays; only `docs/` is updated).
 2. In the repo: **Settings → Pages → Build and deployment**:
    - **Source:** Deploy from a branch
-   - **Branch:** **`gh-pages`** (not `main`) → folder **`/(root)`**
+   - **Branch:** **`main`** → folder **`/docs`** (not `/(root)` — root is README + source)
 3. Wait for the **Actions** workflow to finish (green check), then open `https://buildwithmozi.github.io/Toys-Studio-Gallery/`.
 
-If you still see the README, Pages is still pointing at **`main`** — switch the branch to **`gh-pages`**.
+The `docs/` folder is auto-generated — do not edit it by hand.
 
 Local static preview (same as Pages):
 

@@ -1,15 +1,17 @@
-name: Build and deploy to gh-pages
+name: Build and deploy to main (docs)
 
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "docs/**"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: gh-pages-deploy
+  group: pages-main-docs
   cancel-in-progress: true
 
 jobs:
@@ -33,9 +35,11 @@ jobs:
         env:
           GITHUB_PAGES: "true"
 
-      - name: Deploy built site to gh-pages branch
+      - name: Publish built site to docs/ on main
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: main
           publish_dir: ./out
-          force_orphan: true
+          destination_dir: docs
+          keep_files: true
