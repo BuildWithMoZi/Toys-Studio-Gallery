@@ -144,6 +144,31 @@ body {
   box-shadow: 0 0 0 2px var(--secondary);
 }
 
+/* Mobile-first action button rows (product detail, forms) */
+.btn-action-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .btn-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+}
+
+.btn-action-row > .btn-action-full {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 640px) {
+  .btn-action-row > .btn-action-full {
+    grid-column: auto;
+  }
+}
+
 .font-display {
   font-family: var(--font-fredoka), system-ui, sans-serif;
 }
@@ -267,5 +292,132 @@ body {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+/* Home scroll car — spark trail (no progress line) */
+.scroll-car-sparks {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 2px);
+  width: 40px;
+  height: 44px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.scroll-car-rig[data-scrolling="true"] .scroll-car-sparks {
+  opacity: 1;
+}
+
+.scroll-car-spark {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 4px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 6px 2px rgb(203, 88, 0),
+    0 0 10px 3px rgb(241, 195, 10);
+  transform: translateX(-50%);
+  animation: scroll-spark-fly 0.55s ease-out infinite;
+  opacity: 0;
+}
+
+.scroll-car-spark:nth-child(1) {
+  --spark-x: -10px;
+}
+.scroll-car-spark:nth-child(2) {
+  --spark-x: 8px;
+}
+.scroll-car-spark:nth-child(3) {
+  --spark-x: -14px;
+}
+.scroll-car-spark:nth-child(4) {
+  --spark-x: 12px;
+}
+.scroll-car-spark:nth-child(5) {
+  --spark-x: -6px;
+}
+.scroll-car-spark:nth-child(6) {
+  --spark-x: 14px;
+}
+.scroll-car-spark:nth-child(7) {
+  --spark-x: -12px;
+}
+.scroll-car-spark:nth-child(8) {
+  --spark-x: 6px;
+}
+.scroll-car-spark:nth-child(9) {
+  --spark-x: -8px;
+}
+.scroll-car-spark:nth-child(10) {
+  --spark-x: 10px;
+}
+
+.scroll-car-spark-core {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  width: 22px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 210, 80, 0.55) 35%,
+    rgba(34, 184, 232, 0.25) 60%,
+    transparent 72%
+  );
+  filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.scroll-car-rig[data-scrolling="true"] .scroll-car-spark-core {
+  opacity: 1;
+  animation: scroll-spark-core-pulse 0.35s ease-in-out infinite;
+}
+
+@keyframes scroll-spark-fly {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0) scale(0.3);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(calc(-50% + var(--spark-x, 0px))) translateY(-30px)
+      scale(1.4);
+  }
+}
+
+@keyframes scroll-spark-core-pulse {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(0.85);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.15);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-car-spark,
+  .scroll-car-spark-core {
+    animation: none;
+  }
+
+  .scroll-car-rig[data-scrolling="true"] .scroll-car-sparks {
+    opacity: 0.6;
   }
 }

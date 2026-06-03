@@ -371,3 +371,49 @@ export function Navbar({
     </header>
   );
 }
+
+const HERO_ID = "home-hero";
+
+/** Global navbar — hidden on home; hero embeds its own floating bar. */
+export function LayoutNavbar() {
+  const pathname = usePathname();
+  if (pathname === "/") return null;
+  return <Navbar variant="fixed" />;
+}
+
+/** Home: pill navbar after hero scrolls out of view. */
+export function HomeScrollNavbar() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const hero = document.getElementById(HERO_ID);
+    if (!hero) return;
+
+    const update = () => {
+      setVisible(hero.getBoundingClientRect().bottom <= 0);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return (
+    <div
+      className={cn(
+        "fixed left-0 right-0 top-0 z-50 transition-[transform,opacity] duration-300 ease-out",
+        visible
+          ? "translate-y-0 opacity-100"
+          : "pointer-events-none -translate-y-full opacity-0"
+      )}
+      aria-hidden={!visible}
+    >
+      <Navbar variant="scroll-pill" />
+    </div>
+  );
+}

@@ -4,7 +4,7 @@ import { HiHeart } from "react-icons/hi2";
 import { ProductCard } from "@/components/product/ProductCard";
 import { useWishlist } from "@/context/WishlistContext";
 import { Button } from "@/components/ui/Button";
-import { PAGE_SHELL } from "@/lib/pageLayout";
+import { PAGE_SHELL } from "@/lib/utils";
 
 export default function WishlistPage() {
   const { items } = useWishlist();
@@ -21,7 +21,7 @@ export default function WishlistPage() {
         <div className="mt-16 flex flex-col items-center text-center">
           <HiHeart className="h-16 w-16 text-rose-400/80" aria-hidden />
           <p className="mt-4 text-lg text-muted">No favorites yet!</p>
-          <Button className="mt-6" href="/products">
+          <Button className="mt-6 max-w-xs" size="lg" layout="block" href="/products">
             Discover Toys
           </Button>
         </div>

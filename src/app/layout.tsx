@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Fredoka, Nunito } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
-import { LayoutNavbar } from "@/components/layout/LayoutNavbar";
+import { LayoutNavbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import "./globals.css";
 
@@ -42,10 +41,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${nunito.variable} ${fredoka.variable} min-h-screen antialiased font-sans`}
+        className={`${nunito.variable} ${fredoka.variable} flex min-h-screen flex-col antialiased font-sans`}
       >
         <AppProviders>
-          <ScrollProgress />
           <LayoutNavbar />
           <main className="flex-1">{children}</main>
           <Footer />

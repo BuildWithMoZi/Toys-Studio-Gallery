@@ -1,9 +1,35 @@
 "use client";
 
+import type { IconType } from "react-icons";
+import {
+  HiShieldCheck,
+  HiTrophy,
+  HiTruck,
+  HiUserGroup,
+} from "react-icons/hi2";
 import { achievements } from "@/data/achievements";
-import { AchievementIcon } from "./categoryIcons";
 import { HomeSection } from "./HomeSection";
 import { homeEyebrow, homeTitle } from "./homeStyles";
+
+type AchievementIconKey = "families" | "trophy" | "speed" | "safety";
+
+const ACHIEVEMENT_ICONS: Record<AchievementIconKey, IconType> = {
+  families: HiUserGroup,
+  trophy: HiTrophy,
+  speed: HiTruck,
+  safety: HiShieldCheck,
+};
+
+function AchievementIcon({
+  iconKey,
+  className,
+}: {
+  iconKey: AchievementIconKey;
+  className?: string;
+}) {
+  const Icon = ACHIEVEMENT_ICONS[iconKey];
+  return <Icon className={className} aria-hidden />;
+}
 
 export function TrustNexus() {
   return (

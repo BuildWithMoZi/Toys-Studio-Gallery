@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
 import { getWhatsAppUrl } from "@/lib/order";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
+import { Button } from "@/components/ui/Button";
 import { HomeSection } from "./HomeSection";
 import { homeEyebrow, homeTitle } from "./homeStyles";
 
@@ -27,20 +28,19 @@ export function HomeCTA() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
-          <Link
-            href="/products"
-            className="inline-flex justify-center rounded-full bg-[var(--hero-cta-bg)] px-7 py-3 text-sm font-semibold text-[var(--hero-cta-text)] transition-opacity hover:opacity-90"
-          >
+        <div className="btn-action-row sm:flex sm:flex-wrap">
+          <Button href="/products" size="lg" layout="block">
             Browse all toys
-          </Link>
-          <Link
+          </Button>
+          <Button
             href={getWhatsAppUrl("Hi! I'm ready to order from PlayJoy Toys.")}
-            className="inline-flex justify-center rounded-full border border-[var(--card-border)] bg-card px-7 py-3 text-sm font-semibold text-foreground transition-colors hover:border-secondary"
+            variant="outline"
+            size="lg"
+            layout="block"
           >
-            <FaWhatsapp className="mr-2 h-4 w-4" />
+            <FaWhatsapp className="h-4 w-4 shrink-0" />
             WhatsApp order
-          </Link>
+          </Button>
         </div>
       </div>
 

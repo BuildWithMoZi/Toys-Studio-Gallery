@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { HiChevronDown } from "react-icons/hi2";
 import { faqs } from "@/data/faqs";
-import { PAGE_SHELL } from "@/lib/pageLayout";
+import { PAGE_SHELL } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 export default function FAQPage() {

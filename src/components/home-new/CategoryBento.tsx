@@ -2,11 +2,40 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { HiArrowUpRight } from "react-icons/hi2";
+import type { IconType } from "react-icons";
+import {
+  HiAcademicCap,
+  HiArrowUpRight,
+  HiCube,
+  HiHeart,
+  HiPaintBrush,
+  HiSparkles,
+  HiSun,
+} from "react-icons/hi2";
+import type { Category } from "@/types";
 import { categories } from "@/data/categories";
-import { CategoryIcon } from "./categoryIcons";
 import { HomeSection } from "./HomeSection";
 import { homeEyebrow, homeTitle } from "./homeStyles";
+
+const CATEGORY_ICONS: Record<Category, IconType> = {
+  educational: HiAcademicCap,
+  games: HiCube,
+  "action-figures": HiSparkles,
+  plush: HiHeart,
+  outdoor: HiSun,
+  creative: HiPaintBrush,
+};
+
+export function CategoryIcon({
+  category,
+  className,
+}: {
+  category: Category;
+  className?: string;
+}) {
+  const Icon = CATEGORY_ICONS[category];
+  return <Icon className={className} aria-hidden />;
+}
 
 const bentoLayout = [
   "md:col-span-2 md:row-span-2",
