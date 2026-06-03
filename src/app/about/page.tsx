@@ -4,6 +4,8 @@ import { FaWhatsapp } from "react-icons/fa";
 import { HiShieldCheck, HiTruck } from "react-icons/hi2";
 import { Button } from "@/components/ui/Button";
 import { toyImage } from "@/data/images";
+import { PAGE_SHELL } from "@/lib/pageLayout";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -30,7 +32,7 @@ const features = [
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 pt-28 pb-20 md:px-6">
+    <div className={cn(PAGE_SHELL, "max-w-4xl")}>
       <h1 className="font-display text-4xl font-bold text-gradient text-center">
         About PlayJoy Toys
       </h1>

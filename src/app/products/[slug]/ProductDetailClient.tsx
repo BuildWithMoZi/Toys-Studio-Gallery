@@ -10,6 +10,7 @@ import { formatPrice, getDiscountPercent, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { OrderForm } from "@/components/order/OrderForm";
+import { PAGE_SHELL } from "@/lib/pageLayout";
 
 export function ProductDetailClient({ product }: { product: Product }) {
   const [activeImage, setActiveImage] = useState(0);
@@ -19,7 +20,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   const wishlisted = isWishlisted(product.id);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-28 pb-20 md:px-6">
+    <div className={PAGE_SHELL}>
       <div className="grid gap-10 lg:grid-cols-2">
         <div>
           <div className="relative aspect-square overflow-hidden rounded-3xl card-toy">

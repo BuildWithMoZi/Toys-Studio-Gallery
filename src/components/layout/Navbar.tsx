@@ -11,6 +11,7 @@ import {
 } from "react-icons/hi2";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { handleNavLinkClick } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -83,7 +84,7 @@ export function Navbar({
   const navPadding = isHeroFloating
     ? "px-5 md:px-7 lg:px-8"
     : isScrollPill
-      ? "px-4 sm:px-5 md:px-6"
+      ? "px-5 md:px-6"
       : "px-6 md:px-10 lg:px-14";
 
   const iconBtnClass = cn(
@@ -118,18 +119,20 @@ export function Navbar({
     >
       <Link
         href="/"
+        scroll={false}
+        onClick={(e) => handleNavLinkClick(e, "/", pathname)}
         className={cn(
           "relative z-10 shrink-0 font-display font-bold leading-none tracking-tight text-[var(--navbar-logo)] transition-opacity hover:opacity-80",
           isScrollPill ? "text-xl md:text-[1.35rem]" : "text-[1.35rem] md:text-2xl"
         )}
       >
-        {isScrollPill && (
-          <span
-            className="absolute -left-1 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-secondary"
-            aria-hidden
-          />
-        )}
-        <span className={isScrollPill ? "pl-2" : undefined}>PlayJoy</span>
+          {isScrollPill && (
+            <span
+              className="absolute -left-1 top-1/2 hidden h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-secondary md:block"
+              aria-hidden
+            />
+          )}
+          <span className={isScrollPill ? "md:pl-2" : undefined}>PlayJoy</span>
       </Link>
 
       {searchOpen ? (
@@ -172,7 +175,12 @@ export function Navbar({
           >
             {links.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className={navLinkClass(link.href)}>
+                <Link
+                  href={link.href}
+                  scroll={false}
+                  onClick={(e) => handleNavLinkClick(e, link.href, pathname)}
+                  className={navLinkClass(link.href)}
+                >
                   {link.label}
                 </Link>
               </li>
@@ -187,6 +195,8 @@ export function Navbar({
 
               <Link
                 href="/wishlist"
+                scroll={false}
+                onClick={(e) => handleNavLinkClick(e, "/wishlist", pathname)}
                 className={iconBtnClass}
                 aria-label={
                   wishlistItems.length > 0
@@ -275,7 +285,9 @@ export function Navbar({
         <div
           className={cn(
             "border-t border-[var(--navbar-border)] py-4 lg:hidden",
-            isScrollPill ? "bg-card/95" : "bg-[var(--navbar-bg)]",
+            isScrollPill
+              ? "bg-[var(--navbar-bg)] md:bg-card/95"
+              : "bg-[var(--navbar-bg)]",
             navPadding
           )}
         >
@@ -284,6 +296,8 @@ export function Navbar({
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  scroll={false}
+                  onClick={(e) => handleNavLinkClick(e, link.href, pathname)}
                   className={cn(
                     "block py-2.5 text-xs font-semibold uppercase tracking-[0.2em]",
                     isActive(pathname, link.href)
@@ -307,6 +321,8 @@ export function Navbar({
             </button>
             <Link
               href="/wishlist"
+              scroll={false}
+              onClick={(e) => handleNavLinkClick(e, "/wishlist", pathname)}
               className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--navbar-link)]"
             >
               <HiHeart className="h-4 w-4" />
@@ -326,12 +342,12 @@ export function Navbar({
 
   if (isScrollPill) {
     return (
-      <header className="relative z-20 w-full px-3 pt-3 sm:px-4 md:px-6 md:pt-4">
+      <header className="relative z-20 w-full md:px-6 md:pt-4">
         <div
           className={cn(
-            "mx-auto max-w-6xl overflow-hidden rounded-full border border-[var(--navbar-border)] bg-[var(--navbar-bg)]/95 shadow-[var(--scroll-nav-shadow)] backdrop-blur-md",
-            "ring-1 ring-[var(--scroll-nav-glow)]",
-            mobileOpen && "rounded-3xl"
+            "w-full border-b border-[var(--navbar-border)] bg-[var(--navbar-bg)]/95 backdrop-blur-md",
+            "md:mx-auto md:max-w-6xl md:overflow-hidden md:rounded-full md:border md:border-[var(--navbar-border)] md:shadow-[var(--scroll-nav-shadow)] md:ring-1 md:ring-[var(--scroll-nav-glow)]",
+            mobileOpen && "md:rounded-3xl"
           )}
         >
           {navInner}

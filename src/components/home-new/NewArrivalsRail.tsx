@@ -13,7 +13,7 @@ const doubled = [...railItems, ...railItems];
 export function NewArrivalsRail() {
   return (
     <HomeSection tone="light" dividerTo="peach" waveFlip innerClassName="!px-0 overflow-hidden">
-      <div className="mx-auto mb-8 flex max-w-7xl flex-col gap-2 px-5 md:flex-row md:items-end md:justify-between md:px-8 lg:px-10">
+      <div className="mx-auto mb-6 flex w-full max-w-7xl flex-col gap-2 px-3 sm:mb-8 sm:px-5 md:flex-row md:items-end md:justify-between md:px-8 lg:px-10">
         <div>
           <p className={homeEyebrow}>New arrivals</p>
           <h2 className={homeTitle}>
@@ -32,7 +32,7 @@ export function NewArrivalsRail() {
         <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-background to-transparent md:w-20" />
         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-background to-transparent md:w-20" />
 
-        <div className="marquee-track flex w-max gap-4 px-5 hover:[animation-play-state:paused] md:gap-5 md:px-8">
+        <div className="marquee-track flex w-max gap-3 px-3 hover:[animation-play-state:paused] sm:gap-4 sm:px-5 md:px-8">
           {doubled.map((p, i) => (
             <Link
               key={`${p.id}-${i}`}

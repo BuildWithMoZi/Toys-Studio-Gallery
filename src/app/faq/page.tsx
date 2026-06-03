@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { HiChevronDown } from "react-icons/hi2";
 import { faqs } from "@/data/faqs";
+import { PAGE_SHELL } from "@/lib/pageLayout";
 import { cn } from "@/lib/utils";
 
 export default function FAQPage() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-28 pb-20 md:px-6">
+    <div className={cn(PAGE_SHELL, "max-w-3xl")}>
       <h1 className="text-center font-display text-4xl font-bold text-gradient">
         Frequently Asked Questions
       </h1>

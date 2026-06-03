@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { handleNavLinkClick } from "@/lib/scroll";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -24,6 +26,7 @@ import {
 } from "react-icons/hi2";
 
 export function Footer() {
+  const pathname = usePathname();
   const footerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -49,7 +52,12 @@ export function Footer() {
       <div className="relative mx-auto max-w-7xl px-4 pb-8 pt-16 md:px-6">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="footer-reveal">
-            <Link href="/" className="flex items-center gap-2">
+            <Link
+              href="/"
+              scroll={false}
+              onClick={(e) => handleNavLinkClick(e, "/", pathname)}
+              className="flex items-center gap-2"
+            >
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/15 text-secondary">
                 <HiGift className="h-6 w-6" />
               </span>
@@ -89,6 +97,8 @@ export function Footer() {
                 <li key={href}>
                   <Link
                     href={href}
+                    scroll={false}
+                    onClick={(e) => handleNavLinkClick(e, href, pathname)}
                     className="text-muted hover:text-secondary transition-colors"
                   >
                     {label}
