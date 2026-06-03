@@ -6,8 +6,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Navbar } from "@/components/layout/Navbar";
 import { LiveStatsBar } from "./LiveStatsBar";
-import { HERO_IMAGE } from "@/data/images";
 import { getWhatsAppUrl } from "@/lib/order";
+import { assetPath } from "@/lib/assetPath";
 
 export function HeroPortal() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -35,7 +35,7 @@ export function HeroPortal() {
           className='pointer-events-none absolute inset-0 overflow-hidden'
           aria-hidden>
           <Image
-            src={"/hero/1.png"}
+            src={assetPath("/hero/1.png")}
             alt=''
             fill
             sizes='(max-width: 1280px) 100vw, 1280px'
