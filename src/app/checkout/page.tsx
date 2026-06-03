@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { HiShoppingBag } from "react-icons/hi2";
 import { OrderForm } from "@/components/order/OrderForm";
-import { PAGE_SHELL } from "@/lib/pageLayout";
+import { PAGE_SHELL } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {

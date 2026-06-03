@@ -6,7 +6,7 @@ import { categories } from "@/data/categories";
 import { getProductsByCategory } from "@/data/products";
 import { HomeSection } from "./HomeSection";
 import { HomeProductCard } from "./HomeProductCard";
-import { CategoryIcon } from "./categoryIcons";
+import { CategoryIcon } from "./CategoryBento";
 import { homeEyebrow, homeTitle } from "./homeStyles";
 
 export function CategoryProductStrips() {

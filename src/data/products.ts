@@ -241,3 +241,28 @@ export function getProductsByCategory(category: Category) {
 export function getBudgetPicks(maxPrice = 999) {
   return products.filter((p) => p.price <= maxPrice);
 }
+
+export function getRelatedProducts(product: Product, limit = 4) {
+  const sameCategory = products.filter(
+    (p) => p.category === product.category && p.id !== product.id
+  );
+  const rest = products.filter((p) => p.id !== product.id);
+  return [...sameCategory, ...rest].slice(0, limit);
+}
+
+export function getSuggestedProducts(product: Product, limit = 4) {
+  const picks = [
+    ...getBestSellers(),
+    ...getFeaturedProducts(),
+    ...getNewArrivals(),
+  ].filter((p) => p.id !== product.id);
+  const seen = new Set<string>();
+  const unique: Product[] = [];
+  for (const p of picks) {
+    if (seen.has(p.id)) continue;
+    seen.add(p.id);
+    unique.push(p);
+    if (unique.length >= limit) break;
+  }
+  return unique;
+}

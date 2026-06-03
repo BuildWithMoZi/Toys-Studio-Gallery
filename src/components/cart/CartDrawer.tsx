@@ -154,7 +154,9 @@ export function CartDrawer() {
               <span className="text-secondary">{formatPrice(totalPrice)}</span>
             </div>
             <Button
-              className="w-full"
+              size="lg"
+              layout="block"
+              className="sm:w-full"
               href="/checkout"
               onClick={() => setIsOpen(false)}
             >

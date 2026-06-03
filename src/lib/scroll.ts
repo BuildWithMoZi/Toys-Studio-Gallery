@@ -21,7 +21,7 @@ function normalizePath(path: string) {
   return base.replace(/\/$/, "") || "/";
 }
 
-/** Same-route: smooth scroll to top. Cross-route: rely on SmoothScrollOnNavigate. */
+/** Same-route: smooth scroll to top. Cross-route: rely on AppProviders scroll handler. */
 export function handleNavLinkClick(
   e: MouseEvent<HTMLAnchorElement>,
   href: string,

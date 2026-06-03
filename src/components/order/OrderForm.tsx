@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import { HiEnvelope } from "react-icons/hi2";
+import { HiEnvelope, HiXMark } from "react-icons/hi2";
+import { cn } from "@/lib/utils";
 import type { CartItem, OrderFormData, Product } from "@/types";
 import { buildOrderMessage, getWhatsAppUrl, getMailtoUrl } from "@/lib/order";
 import { Button } from "@/components/ui/Button";
@@ -11,9 +12,16 @@ import { useCart } from "@/context/CartContext";
 interface OrderFormProps {
   product?: Product;
   defaultQuantity?: number;
+  variant?: "default" | "modal";
+  onSuccess?: () => void;
 }
 
-export function OrderForm({ product, defaultQuantity = 1 }: OrderFormProps) {
+export function OrderForm({
+  product,
+  defaultQuantity = 1,
+  variant = "default",
+  onSuccess,
+}: OrderFormProps) {
   const { items: cartItems, clearCart } = useCart();
   const [form, setForm] = useState<OrderFormData>({
     name: "",
@@ -79,6 +87,7 @@ export function OrderForm({ product, defaultQuantity = 1 }: OrderFormProps) {
         "Order sent! Check WhatsApp — we will confirm shortly. Email notification sent to admin."
       );
       if (items) clearCart();
+      onSuccess?.();
     } catch {
       setStatus("success");
       setMessage(
@@ -88,18 +97,30 @@ export function OrderForm({ product, defaultQuantity = 1 }: OrderFormProps) {
         `New Order from ${form.name}`,
         orderMsg
       );
+      onSuccess?.();
     }
   };
 
+  const isModal = variant === "modal";
+
   return (
-    <form onSubmit={handleSubmit} className="card-toy space-y-5 p-6 md:p-8">
-      <h2 className="font-display text-2xl font-bold">Place Your Order</h2>
+    <form
+      onSubmit={handleSubmit}
+      className={
+        isModal
+          ? "space-y-4"
+          : "card-toy space-y-5 p-6 md:p-8"
+      }
+    >
+      {!isModal && (
+        <h2 className="font-display text-2xl font-bold">Place Your Order</h2>
+      )}
       <p className="text-sm text-muted">
         Fill in details below — order goes to admin via WhatsApp & Email. Pay on
         delivery!
       </p>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
         <Field label="Full Name *" required>
           <input
             required
@@ -176,11 +197,19 @@ export function OrderForm({ product, defaultQuantity = 1 }: OrderFormProps) {
         type="submit"
         variant="whatsapp"
         size="lg"
-        className="w-full"
+        layout="block"
+        className="btn-action-full min-h-[3.25rem] sm:min-h-0"
         disabled={status === "loading"}
       >
-        <FaWhatsapp className="h-5 w-5" />
-        {status === "loading" ? "Sending..." : "Order via WhatsApp & Email"}
+        <FaWhatsapp className="h-5 w-5 shrink-0" />
+        {status === "loading" ? (
+          "Sending..."
+        ) : (
+          <>
+            <span className="sm:hidden">Order on WhatsApp</span>
+            <span className="hidden sm:inline">Order via WhatsApp & Email</span>
+          </>
+        )}
       </Button>
 
       <p className="flex items-center justify-center gap-2 text-xs text-muted">
@@ -188,6 +217,84 @@ export function OrderForm({ product, defaultQuantity = 1 }: OrderFormProps) {
         Admin receives email + WhatsApp notification
       </p>
     </form>
+  );
+}
+
+interface OrderModalProps {
+  open: boolean;
+  onClose: () => void;
+  product?: Product;
+  defaultQuantity?: number;
+}
+
+export function OrderModal({
+  open,
+  onClose,
+  product,
+  defaultQuantity = 1,
+}: OrderModalProps) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[90] flex items-end justify-center sm:items-center sm:p-4"
+      role="presentation"
+    >
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
+        aria-label="Close order form"
+        onClick={onClose}
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="order-modal-title"
+        className={cn(
+          "relative z-10 flex w-full max-h-[min(92dvh,100%)] flex-col overflow-hidden bg-card shadow-2xl",
+          "rounded-t-3xl border border-card-border sm:max-h-[90vh] sm:max-w-lg sm:rounded-3xl"
+        )}
+      >
+        <div className="mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-card-border sm:hidden" />
+        <div className="flex shrink-0 items-center justify-between border-b border-card-border px-4 py-3 sm:px-6">
+          <h2
+            id="order-modal-title"
+            className="font-display text-lg font-bold sm:text-xl"
+          >
+            Place Your Order
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full p-2 transition-colors hover:bg-primary/80"
+            aria-label="Close"
+          >
+            <HiXMark className="h-6 w-6" />
+          </button>
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 sm:px-6 sm:pb-6 sm:pt-4">
+          <OrderForm
+            product={product}
+            defaultQuantity={defaultQuantity}
+            variant="modal"
+            onSuccess={onClose}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 

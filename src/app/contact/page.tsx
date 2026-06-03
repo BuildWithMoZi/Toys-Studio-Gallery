@@ -5,7 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { HiEnvelope, HiMapPin, HiPhone } from "react-icons/hi2";
 import { getWhatsAppUrl } from "@/lib/order";
 import { Button } from "@/components/ui/Button";
-import { PAGE_SHELL } from "@/lib/pageLayout";
+import { PAGE_SHELL } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 export default function ContactPage() {
@@ -66,8 +66,8 @@ export default function ContactPage() {
               </div>
             </div>
           ))}
-          <Button variant="whatsapp" size="lg" href="/checkout" className="w-full">
-            <FaWhatsapp className="h-5 w-5" />
+          <Button variant="whatsapp" size="lg" layout="block" href="/checkout">
+            <FaWhatsapp className="h-5 w-5 shrink-0" />
             Quick Order on WhatsApp
           </Button>
         </div>
@@ -102,7 +102,7 @@ export default function ContactPage() {
               WhatsApp opened! We&apos;ll reply soon.
             </p>
           )}
-          <Button type="submit" className="w-full">
+          <Button type="submit" size="lg" layout="block">
             Send via WhatsApp
           </Button>
         </form>

@@ -1,23 +1,170 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
-import { HiHeart, HiShoppingBag, HiStar } from "react-icons/hi2";
+import { HiBolt, HiCheckBadge, HiShoppingBag, HiStar } from "react-icons/hi2";
 import type { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
+import { categories } from "@/data/categories";
+import {
+  getRelatedProducts,
+  getSuggestedProducts,
+} from "@/data/products";
+import { getReviewsForProduct } from "@/data/testimonials";
 import { formatPrice, getDiscountPercent, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { OrderForm } from "@/components/order/OrderForm";
-import { PAGE_SHELL } from "@/lib/pageLayout";
+import { OrderModal } from "@/components/order/OrderForm";
+import { ProductCard } from "@/components/product/ProductCard";
+import { PAGE_SHELL } from "@/lib/utils";
+
+function DetailSectionTitle({
+  eyebrow,
+  title,
+  href,
+  linkLabel,
+}: {
+  eyebrow: string;
+  title: string;
+  href?: string;
+  linkLabel?: string;
+}) {
+  return (
+    <div className="mb-6 flex flex-wrap items-end justify-between gap-3 md:mb-8">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
+          {eyebrow}
+        </p>
+        <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">
+          {title}
+        </h2>
+      </div>
+      {href && linkLabel && (
+        <Link
+          href={href}
+          className="text-sm font-semibold text-secondary hover:underline"
+        >
+          {linkLabel} →
+        </Link>
+      )}
+    </div>
+  );
+}
+
+function ProductDetailBelowFold({ product }: { product: Product }) {
+  const related = getRelatedProducts(product, 4);
+  const suggested = getSuggestedProducts(product, 4);
+  const reviews = getReviewsForProduct(product.slug, 3);
+  const categoryLabel =
+    categories.find((c) => c.id === product.category)?.name ??
+    product.category;
+
+  return (
+    <div className="mt-14 space-y-14 border-t border-card-border pt-14 md:mt-20 md:space-y-20 md:pt-20">
+      <section>
+        <DetailSectionTitle
+          eyebrow="Recommended"
+          title={`More in ${categoryLabel}`}
+          href={`/products?category=${product.category}`}
+          linkLabel="View category"
+        />
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+          {related.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <DetailSectionTitle
+          eyebrow="You might like"
+          title="Popular picks for you"
+          href="/products"
+          linkLabel="Shop all"
+        />
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+          {suggested.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <DetailSectionTitle
+          eyebrow="Reviews"
+          title="What parents are saying"
+        />
+        <div className="mb-4 flex flex-wrap items-center gap-3 rounded-2xl border border-card-border bg-card/60 px-4 py-3">
+          <div className="flex items-center gap-1 text-amber-500">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <HiStar
+                key={i}
+                className={`h-5 w-5 ${
+                  i < Math.round(product.rating)
+                    ? "fill-current"
+                    : "opacity-30"
+                }`}
+              />
+            ))}
+          </div>
+          <span className="font-display text-lg font-bold">
+            {product.rating} out of 5
+          </span>
+          <span className="text-sm text-muted">
+            Based on {product.reviewCount} reviews
+          </span>
+        </div>
+
+        <ul className="grid gap-4 md:grid-cols-3">
+          {reviews.map((review) => (
+            <li key={review.id} className="card-toy flex flex-col p-5">
+              <div className="flex gap-0.5 text-amber-500">
+                {Array.from({ length: review.rating }).map((_, j) => (
+                  <HiStar key={j} className="h-4 w-4 fill-current" />
+                ))}
+              </div>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">
+                &ldquo;{review.text}&rdquo;
+              </p>
+              <div className="mt-4 flex items-center gap-3 border-t border-card-border pt-4">
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                  <Image
+                    src={review.avatar}
+                    alt={review.author}
+                    fill
+                    className="object-cover"
+                    sizes="40px"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-display text-sm font-bold text-foreground">
+                    {review.author}
+                  </p>
+                  <p className="flex items-center gap-1 text-xs text-muted">
+                    {review.role}
+                    {review.verified && (
+                      <HiCheckBadge
+                        className="h-3.5 w-3.5 text-secondary"
+                        aria-label="Verified"
+                      />
+                    )}
+                  </p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+}
 
 export function ProductDetailClient({ product }: { product: Product }) {
   const [activeImage, setActiveImage] = useState(0);
+  const [orderOpen, setOrderOpen] = useState(false);
   const { addItem } = useCart();
-  const { toggle, isWishlisted } = useWishlist();
   const discount = getDiscountPercent(product.price, product.originalPrice);
-  const wishlisted = isWishlisted(product.id);
 
   return (
     <div className={PAGE_SHELL}>
@@ -56,9 +203,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
             {product.badges.map((b) => (
               <Badge key={b} label={b} />
             ))}
-            {discount > 0 && (
-              <Badge label={`${discount}% OFF`} />
-            )}
+            {discount > 0 && <Badge label={`${discount}% OFF`} />}
           </div>
           <h1 className="mt-4 font-display text-3xl font-bold md:text-4xl">
             {product.name}
@@ -94,28 +239,31 @@ export function ProductDetailClient({ product }: { product: Product }) {
               <li key={f}>✓ {f}</li>
             ))}
           </ul>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Button size="lg" onClick={() => addItem(product)}>
-              <HiShoppingBag className="h-5 w-5" />
+          <div className="btn-action-row mt-8">
+            <Button size="lg" layout="block" onClick={() => addItem(product)}>
+              <HiShoppingBag className="h-5 w-5 shrink-0" />
               Add to Cart
             </Button>
             <Button
-              variant="outline"
+              variant="secondary"
               size="lg"
-              onClick={() => toggle(product)}
+              layout="block"
+              onClick={() => setOrderOpen(true)}
             >
-              <HiHeart
-                className={cn("h-5 w-5", wishlisted && "fill-rose-500 text-rose-500")}
-              />
-              {wishlisted ? "Wishlisted" : "Wishlist"}
+              <HiBolt className="h-5 w-5 shrink-0" />
+              Buy Now
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="mt-16 max-w-2xl mx-auto lg:mx-0 lg:max-w-none">
-        <OrderForm product={product} />
-      </div>
+      <ProductDetailBelowFold product={product} />
+
+      <OrderModal
+        open={orderOpen}
+        onClose={() => setOrderOpen(false)}
+        product={product}
+      />
     </div>
   );
 }

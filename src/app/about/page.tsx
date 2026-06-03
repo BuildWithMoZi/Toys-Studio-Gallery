@@ -4,7 +4,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { HiShieldCheck, HiTruck } from "react-icons/hi2";
 import { Button } from "@/components/ui/Button";
 import { toyImage } from "@/data/images";
-import { PAGE_SHELL } from "@/lib/pageLayout";
+import { PAGE_SHELL } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -73,7 +73,7 @@ export default function AboutPage() {
         ))}
       </div>
       <div className="mt-12 text-center">
-        <Button href="/products" size="lg">
+        <Button href="/products" size="lg" layout="block" className="mx-auto max-w-sm">
           Start Shopping
         </Button>
       </div>

@@ -1,5 +1,15 @@
 import type { Product } from "@/types";
 
+/** Shared page wrapper — full width on mobile, contained from md */
+export const PAGE_SHELL =
+  "mx-auto w-full max-w-7xl px-3 pt-24 pb-16 md:px-6 md:pt-28 md:pb-20";
+
+/** Prefix public asset paths for GitHub Pages (subpath deploy). */
+export function assetPath(path: string): string {
+  const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 export function cn(...classes: (string | boolean | undefined | null)[]) {
   return classes.filter(Boolean).join(" ");
 }
