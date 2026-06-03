@@ -4,7 +4,7 @@ import Link from "next/link";
 import { products } from "@/data/products";
 import { HomeSection } from "./HomeSection";
 import { HomeProductCard } from "./HomeProductCard";
-import { homeEyebrow, homeTitle } from "./homeStyles";
+import { homeEyebrow, homeProductGrid, homeTitle } from "./homeStyles";
 
 export function ShopAllToys() {
   return (
@@ -27,7 +27,7 @@ export function ShopAllToys() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className={homeProductGrid}>
         {products.map((p) => (
           <HomeProductCard key={p.id} product={p} />
         ))}

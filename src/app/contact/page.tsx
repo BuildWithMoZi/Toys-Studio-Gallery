@@ -5,6 +5,8 @@ import { FaWhatsapp } from "react-icons/fa";
 import { HiEnvelope, HiMapPin, HiPhone } from "react-icons/hi2";
 import { getWhatsAppUrl } from "@/lib/order";
 import { Button } from "@/components/ui/Button";
+import { PAGE_SHELL } from "@/lib/pageLayout";
+import { cn } from "@/lib/utils";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -18,7 +20,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pt-28 pb-20 md:px-6">
+    <div className={cn(PAGE_SHELL, "max-w-5xl")}>
       <h1 className="text-center font-display text-4xl font-bold text-gradient">
         Contact Us
       </h1>

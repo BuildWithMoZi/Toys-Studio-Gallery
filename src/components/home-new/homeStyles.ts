@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 
 export const HOME_SHELL_MARGIN =
-  "mx-4 mt-4 md:mx-6 md:mt-5 lg:mx-8 lg:mt-6 xl:mx-auto xl:max-w-7xl";
+  "mx-0 mt-0 mb-0 md:mx-6 md:mt-5 md:mb-8 lg:mx-8 lg:mt-6 xl:mx-auto xl:max-w-7xl";
 
 export const HOME_SHELL =
-  "flex flex-col overflow-x-hidden border border-[var(--navbar-border)] shadow-[var(--shadow)]";
+  "flex flex-col overflow-x-hidden border-0 shadow-none md:border md:border-[var(--navbar-border)] md:shadow-[var(--shadow)]";
 
 export type HomeTone = "light" | "peach" | "navbar";
 
@@ -22,7 +22,11 @@ export function homeSection(
 }
 
 export const homeSectionInner =
-  "mx-auto max-w-7xl px-5 py-14 md:px-8 md:py-16 lg:px-10";
+  "mx-auto w-full max-w-7xl px-3 py-10 sm:px-5 sm:py-12 md:px-8 md:py-16 lg:px-10";
+
+/** Product grids on home */
+export const homeProductGrid =
+  "grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4";
 
 export const homeEyebrow = "text-xs font-bold uppercase tracking-[0.22em] text-secondary";
 

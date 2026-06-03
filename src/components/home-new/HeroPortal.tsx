@@ -30,7 +30,7 @@ export function HeroPortal() {
     <div ref={heroRef} id="home-hero" className="relative">
       <Navbar variant='hero-floating' />
 
-      <div className='relative flex min-h-[min(70vh,680px)] flex-col justify-center overflow-hidden bg-background px-5 py-12 pt-8 md:min-h-[min(75vh,760px)] md:pt-10 lg:px-8'>
+      <div className="relative flex min-h-[min(70vh,680px)] flex-col justify-center overflow-hidden bg-background px-3 py-10 pt-6 sm:px-5 sm:py-12 sm:pt-8 md:min-h-[min(75vh,760px)] md:pt-10 lg:px-8">
         <div
           className='pointer-events-none absolute inset-0 overflow-hidden'
           aria-hidden>

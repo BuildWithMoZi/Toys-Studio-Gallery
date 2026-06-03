@@ -7,6 +7,7 @@ import { products } from "@/data/products";
 import { filterProducts } from "@/lib/utils";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters } from "@/components/product/ProductFilters";
+import { PAGE_SHELL } from "@/lib/pageLayout";
 
 export function ProductsPageClient() {
   const searchParams = useSearchParams();
@@ -27,7 +28,7 @@ export function ProductsPageClient() {
   }, [searchParams]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-28 pb-20 md:px-6">
+    <div className={PAGE_SHELL}>
       <div className="mb-10 text-center md:text-left">
         <h1 className="font-display text-4xl font-bold text-gradient">
           Shop All Toys
@@ -47,7 +48,7 @@ export function ProductsPageClient() {
             </p>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
             {filtered.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

@@ -5,7 +5,7 @@ import { HiTag } from "react-icons/hi2";
 import { getBudgetPicks, getOnSale } from "@/data/products";
 import { HomeSection } from "./HomeSection";
 import { HomeProductCard } from "./HomeProductCard";
-import { homeEyebrow, homeTitle } from "./homeStyles";
+import { homeEyebrow, homeProductGrid, homeTitle } from "./homeStyles";
 
 const saleItems = getOnSale();
 const budgetItems = getBudgetPicks(999).filter(
@@ -38,7 +38,7 @@ export function DealsShowcase() {
               All offers →
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div className={homeProductGrid}>
             {saleItems.map((p) => (
               <HomeProductCard key={p.id} product={p} />
             ))}
@@ -57,7 +57,7 @@ export function DealsShowcase() {
               Great gifts without breaking the bank.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div className={homeProductGrid}>
             {budgetItems.map((p) => (
               <HomeProductCard key={p.id} product={p} />
             ))}
