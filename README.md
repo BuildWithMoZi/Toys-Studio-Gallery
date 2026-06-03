@@ -25,6 +25,27 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Deploy to GitHub Pages
+
+GitHub Pages serves **static files only**. It cannot run the Next.js server, so publishing the repo root (README + source) shows the README instead of the app.
+
+1. In the repo: **Settings → Pages → Build and deployment → Source**, choose **GitHub Actions** (not “Deploy from a branch”).
+2. Push `main` with `.github/workflows/deploy-github-pages.yml` (workflow builds `out/` and deploys it).
+3. After the workflow succeeds, open `https://buildwithmozi.github.io/Toys-Studio-Gallery/`.
+
+Local static preview (same as Pages):
+
+```bash
+# PowerShell
+$env:GITHUB_PAGES = "true"
+npm run build:pages
+npx serve out
+```
+
+**Note:** On GitHub Pages, `/api/order` (SMTP email) does not run. Orders still work via WhatsApp and mailto fallback.
+
+For full Next.js features (API routes, image optimization), use [Vercel](https://vercel.com) instead.
+
 ## Environment Variables
 
 | Variable | Description |
