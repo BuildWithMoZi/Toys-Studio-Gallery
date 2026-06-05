@@ -1,4 +1,4 @@
-:HL["/Toys-Studio-Gallery/_next/static/chunks/0q4nrhxsi~ah3.css","style"]
+:HL["/Toys-Studio-Gallery/_next/static/chunks/04d127c3b-mab.css","style"]
 :HL["/Toys-Studio-Gallery/_next/static/media/07454f8ad8aaac57-s.p.0tqkxa-w3pk~c.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/Toys-Studio-Gallery/_next/static/media/5d52bd6c4cb3f315-s.p.04niyqph9_pxk.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"products","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"garden-explorer-kit","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"qlvcNSmaW4eoIQNSnxEPk"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"products","param":null,"prefetchHints":0,"slots":{"children":{"name":"slug","param":{"type":"d","key":"garden-explorer-kit","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"yCQCtQs3Tk8b8rKeMcybB"}
