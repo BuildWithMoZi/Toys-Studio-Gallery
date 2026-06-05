@@ -64,9 +64,6 @@ export default function CategoriesPage() {
                     />
                   </div>
                 </div>
-                <span className="mt-4 inline-block text-sm font-bold text-secondary group-hover:underline">
-                  Shop now →
-                </span>
               </Link>
             ))}
           </div>

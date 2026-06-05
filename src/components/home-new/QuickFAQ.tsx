@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { faqs } from "@/data/faqs";
 import { cn } from "@/lib/utils";
@@ -18,14 +17,8 @@ export function QuickFAQ() {
 
   return (
     <section className={homeFullSection} aria-label="FAQ">
-      <div className="mb-5 flex flex-col items-center gap-2 px-4 sm:mb-6 md:mb-8">
+      <div className="mb-5 px-4 text-center sm:mb-6 md:mb-8">
         <h2 className={homeFullHeading}>Quick answers</h2>
-        <Link
-          href="/faq"
-          className="text-sm font-semibold text-[#c8102e] hover:underline"
-        >
-          Full FAQ →
-        </Link>
       </div>
 
       <div

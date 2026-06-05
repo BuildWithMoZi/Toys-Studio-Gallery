@@ -4,6 +4,7 @@ import { SITE_META } from "@/data/site";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { LayoutNavbar } from "@/components/layout/Navbar";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import "./globals.css";
@@ -48,8 +49,11 @@ export default function RootLayout({
           <AnnouncementBar />
           <div className="h-7 shrink-0" aria-hidden />
           <LayoutNavbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <main className="flex-1 pb-[calc(3.75rem+env(safe-area-inset-bottom))] md:pb-0">
+            {children}
+          </main>
+          <Footer className="pb-[calc(3.75rem+env(safe-area-inset-bottom))] md:pb-0" />
+          <MobileBottomNav />
           <CartDrawer />
         </AppProviders>
       </body>

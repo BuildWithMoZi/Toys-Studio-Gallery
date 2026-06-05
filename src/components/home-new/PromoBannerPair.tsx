@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PROMO_BANNER_PAIR } from "@/data/images";
+import { assetPath } from "@/lib/utils";
 
 export function PromoBannerPair() {
   return (
@@ -15,7 +16,11 @@ export function PromoBannerPair() {
             className='group block w-full overflow-hidden rounded-none sm:rounded-2xl md:rounded-3xl'>
             <div className='relative h-[min(56vw,320px)] w-full sm:h-[min(48vw,380px)] md:h-[min(42vw,460px)] lg:h-[min(38vw,520px)]'>
               <Image
-                src={banner.image}
+                src={
+                  banner.image.startsWith("http")
+                    ? banner.image
+                    : assetPath(banner.image)
+                }
                 alt={banner.alt}
                 fill
                 className='object-cover object-center transition-transform duration-300 group-hover:scale-[1.01]'

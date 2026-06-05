@@ -22,32 +22,18 @@ import { PAGE_SHELL } from "@/lib/utils";
 function DetailSectionTitle({
   eyebrow,
   title,
-  href,
-  linkLabel,
 }: {
   eyebrow: string;
   title: string;
-  href?: string;
-  linkLabel?: string;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-3 md:mb-8">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
-          {eyebrow}
-        </p>
-        <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">
-          {title}
-        </h2>
-      </div>
-      {href && linkLabel && (
-        <Link
-          href={href}
-          className="text-sm font-semibold text-secondary hover:underline"
-        >
-          {linkLabel} →
-        </Link>
-      )}
+    <div className="mb-6 md:mb-8">
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
+        {eyebrow}
+      </p>
+      <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">
+        {title}
+      </h2>
     </div>
   );
 }
@@ -66,8 +52,6 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
         <DetailSectionTitle
           eyebrow="Recommended"
           title={`More in ${categoryLabel}`}
-          href={`/products?category=${product.category}`}
-          linkLabel="View category"
         />
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
           {related.map((p) => (
@@ -80,8 +64,6 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
         <DetailSectionTitle
           eyebrow="You might like"
           title="Popular picks for you"
-          href="/products"
-          linkLabel="Shop all"
         />
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
           {suggested.map((p) => (

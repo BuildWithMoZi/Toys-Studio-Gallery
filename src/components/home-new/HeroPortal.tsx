@@ -35,13 +35,22 @@ export function HeroPortal() {
       <HeroHeader />
 
       <div className="relative min-h-0 flex-1 overflow-hidden">
+        {/* Mobile only — tablet/desktop unchanged */}
+        <Image
+          src={assetPath("/hero/mobile-view-hero-banner.png")}
+          alt="Luxury ride-on toys for kids"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center md:hidden"
+        />
         <Image
           src={assetPath("/hero/hero-banner.png")}
           alt="Luxury ride-on toys for kids"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="hidden object-cover object-center md:block"
         />
 
         <div className="absolute inset-0 z-10 flex items-end justify-end p-4 sm:p-5 md:p-6 lg:p-8">

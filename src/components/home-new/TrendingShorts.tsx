@@ -57,7 +57,7 @@ function ShortEmbed({
 export function TrendingShorts() {
   const videos = TRENDING_SHORTS.map((item) => ({
     ...item,
-    embedUrl: getVideoEmbedUrl(item.url, { autoplay: true }),
+    embedUrl: getVideoEmbedUrl(item.url, { autoplay: false }),
   })).filter((item) => item.embedUrl);
 
   if (videos.length === 0) return null;
@@ -66,7 +66,7 @@ export function TrendingShorts() {
     <section className={homeFullSection} aria-label="Trending shorts">
       <h2 className={homeFullTitle}>Trending Shorts</h2>
 
-      <div className="flex gap-3 overflow-x-auto px-2 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-4 sm:px-3 lg:px-4 [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-3 overflow-x-auto overscroll-x-contain px-2 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-4 sm:px-3 lg:px-4 [&::-webkit-scrollbar]:hidden">
         {videos.map((video, i) => (
           <div
             key={video.url}
@@ -75,7 +75,7 @@ export function TrendingShorts() {
             <ShortEmbed
               embedUrl={video.embedUrl!}
               title={video.title ?? `Trending short ${i + 1}`}
-              eager={i < 5}
+              eager={i < 2}
             />
           </div>
         ))}

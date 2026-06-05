@@ -14,14 +14,8 @@ const doubled = [...railItems, ...railItems];
 export function NewArrivalsRail() {
   return (
     <section className={homeFullSection} aria-label="New arrivals">
-      <div className="mb-5 flex flex-col items-center gap-2 px-4 sm:mb-6 md:mb-8">
+      <div className="mb-5 px-4 text-center sm:mb-6 md:mb-8">
         <h2 className={homeFullHeading}>Fresh drops</h2>
-        <Link
-          href="/products?badge=new"
-          className="text-sm font-semibold text-secondary hover:underline"
-        >
-          View all →
-        </Link>
       </div>
 
       <div className="relative overflow-hidden">
