@@ -48,14 +48,14 @@ export function CartDrawer() {
         ref={panelRef}
         className="fixed right-0 top-0 z-[80] flex h-full w-full max-w-md translate-x-full flex-col bg-card shadow-2xl"
       >
-        <div className="flex items-center justify-between border-b border-card-border p-5">
+        <div className="flex items-center justify-between border-b border-gray-100 p-5">
           <h2 className="font-display text-xl font-bold">
             Your Cart ({totalItems})
           </h2>
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="rounded-full p-2 hover:bg-primary/80"
+            className="rounded-full p-2 transition-colors hover:bg-gray-100"
             aria-label="Close cart"
           >
             <HiXMark className="h-6 w-6" />
@@ -65,7 +65,7 @@ export function CartDrawer() {
         <div className="flex-1 overflow-y-auto p-5">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <HiShoppingBag className="h-16 w-16 text-secondary/60" aria-hidden />
+              <HiShoppingBag className="h-16 w-16 text-[#c8102e]/40" aria-hidden />
               <p className="mt-4 font-semibold text-muted">
                 Your cart is empty. Add some toys!
               </p>
@@ -82,7 +82,7 @@ export function CartDrawer() {
               {items.map((item) => (
                 <li
                   key={item.product.id}
-                  className="flex gap-3 rounded-2xl border border-card-border p-3"
+                  className="flex gap-3 rounded-2xl border border-gray-100 p-3"
                 >
                   <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl">
                     <Image
@@ -96,11 +96,11 @@ export function CartDrawer() {
                     <Link
                       href={`/products/${item.product.slug}`}
                       onClick={() => setIsOpen(false)}
-                      className="font-semibold text-sm line-clamp-1 hover:text-secondary"
+                      className="font-semibold text-sm line-clamp-1 transition-colors hover:text-[#c8102e]"
                     >
                       {item.product.name}
                     </Link>
-                    <p className="text-secondary font-bold text-sm">
+                    <p className="font-bold text-sm text-[#c8102e]">
                       {formatPrice(item.product.price)}
                     </p>
                     <div className="mt-2 flex items-center gap-2">
@@ -113,7 +113,7 @@ export function CartDrawer() {
                           )
                         }
                         disabled={item.quantity <= 1}
-                        className="rounded-lg bg-primary/80 p-1 disabled:opacity-40"
+                        className="rounded-lg border border-gray-200 bg-gray-50 p-1 transition-colors hover:border-[#c8102e]/30 disabled:opacity-40"
                       >
                         <HiMinus className="h-4 w-4" />
                       </button>
@@ -128,7 +128,7 @@ export function CartDrawer() {
                             item.quantity + 1
                           )
                         }
-                        className="rounded-lg bg-primary/80 p-1"
+                        className="rounded-lg border border-gray-200 bg-gray-50 p-1 transition-colors hover:border-[#c8102e]/30"
                       >
                         <HiPlus className="h-4 w-4" />
                       </button>
@@ -148,10 +148,10 @@ export function CartDrawer() {
         </div>
 
         {items.length > 0 && (
-          <div className="border-t border-card-border p-5 space-y-3">
+          <div className="space-y-3 border-t border-gray-100 p-5">
             <div className="flex justify-between text-lg font-bold">
               <span>Total</span>
-              <span className="text-secondary">{formatPrice(totalPrice)}</span>
+              <span className="text-[#c8102e]">{formatPrice(totalPrice)}</span>
             </div>
             <Button
               size="lg"
@@ -160,7 +160,7 @@ export function CartDrawer() {
               href="/checkout"
               onClick={() => setIsOpen(false)}
             >
-              Place Order
+              View Cart & Checkout
             </Button>
           </div>
         )}

@@ -41,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
         className={`${nunito.variable} ${fredoka.variable} flex min-h-screen flex-col antialiased font-sans`}
       >

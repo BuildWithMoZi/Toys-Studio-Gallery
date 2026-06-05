@@ -36,7 +36,7 @@ export function ProductFilters() {
   };
 
   return (
-    <aside className="card-toy space-y-6 p-5 lg:sticky lg:top-28 lg:self-start">
+    <aside className="space-y-6 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm lg:sticky lg:top-28 lg:self-start">
       <h3 className="font-display text-lg font-bold">Filters</h3>
 
       <form onSubmit={handleSearch}>
@@ -50,7 +50,7 @@ export function ProductFilters() {
           />
           <button
             type="submit"
-            className="rounded-xl bg-secondary px-4 text-sm font-bold text-white hover:bg-secondary/90"
+            className="rounded-xl bg-[#c8102e] px-4 text-sm font-bold text-white transition-colors hover:bg-[#a00d24]"
           >
             Go
           </button>
@@ -129,7 +129,7 @@ export function ProductFilters() {
       <button
         type="button"
         onClick={() => router.push("/products")}
-        className="w-full rounded-full border-2 border-secondary py-2 text-sm font-bold text-secondary hover:bg-secondary hover:text-white transition-colors"
+        className="w-full rounded-full border-2 border-[#c8102e] py-2 text-sm font-bold text-[#c8102e] transition-colors hover:bg-[#c8102e] hover:text-white"
       >
         Clear Filters
       </button>

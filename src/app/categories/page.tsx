@@ -5,68 +5,64 @@ import Link from "next/link";
 import { categories } from "@/data/categories";
 import { CategoryIcon } from "@/components/category/CategoryIcon";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
-import { cn } from "@/lib/utils";
-
-function CategoriesHeading() {
-  return (
-    <div className="mb-10 text-center">
-      <span className="mb-3 inline-block rounded-full bg-secondary/10 px-4 py-1 text-sm font-bold text-secondary dark:text-secondary">
-        Shop by Category
-      </span>
-      <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-        Find Your Perfect Play
-      </h2>
-      <p className="mx-auto mt-3 max-w-2xl text-muted md:text-lg">
-        From cuddly plushies to brain-boosting educational toys — explore every
-        adventure!
-      </p>
-    </div>
-  );
-}
+import { PAGE_SHELL } from "@/lib/utils";
 
 export default function CategoriesPage() {
   const ref = useGsapReveal<HTMLDivElement>({
     children: ".category-card",
-    stagger: 0.1,
+    stagger: 0.08,
   });
 
   return (
-    <div className="pt-24">
-      <section id="categories" className="px-4 py-20 md:px-6">
-        <div className="mx-auto max-w-7xl">
-          <CategoriesHeading />
-          <div ref={ref} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/products?category=${cat.id}`}
-                className={cn(
-                  "category-card group relative overflow-hidden rounded-3xl bg-gradient-to-br p-6 card-toy transition-all hover:-translate-y-2 hover:shadow-xl",
-                  cat.color
-                )}
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-card text-secondary">
-                      <CategoryIcon category={cat.id} className="h-7 w-7" />
-                    </span>
-                    <h3 className="mt-3 font-display text-xl font-bold text-foreground">
-                      {cat.name}
-                    </h3>
-                    <p className="mt-1 text-sm text-muted">{cat.description}</p>
-                  </div>
-                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
-                    <Image
-                      src={cat.image}
-                      alt={cat.name}
-                      fill
-                      className="object-cover transition-transform group-hover:scale-110"
-                    />
-                  </div>
+    <div className="w-full bg-white">
+      <section id="categories" className={PAGE_SHELL}>
+        <div className="mb-8 text-center md:mb-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c8102e]">
+            Shop by Category
+          </p>
+          <h1 className="mt-2 font-display text-xl font-bold text-foreground sm:text-2xl md:text-3xl">
+            Find Your Perfect Play
+          </h1>
+          <p className="mx-auto mt-2 max-w-2xl text-sm text-muted sm:text-base">
+            From cuddly plushies to brain-boosting educational toys — explore
+            every adventure!
+          </p>
+        </div>
+
+        <div
+          ref={ref}
+          className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3"
+        >
+          {categories.map((cat) => (
+            <Link
+              key={cat.id}
+              href={`/products?category=${cat.id}`}
+              className="category-card group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#c8102e]/20 hover:shadow-md md:rounded-3xl"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-gray-50">
+                <Image
+                  src={cat.image}
+                  alt={cat.name}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  sizes="(max-width: 640px) 100vw, 33vw"
+                />
+              </div>
+              <div className="flex items-start gap-3 p-4 md:p-5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#c8102e]/15 bg-[#c8102e]/5 text-[#c8102e]">
+                  <CategoryIcon category={cat.id} className="h-6 w-6" />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="font-display text-base font-bold text-foreground transition-colors group-hover:text-[#c8102e] md:text-lg">
+                    {cat.name}
+                  </h3>
+                  <p className="mt-0.5 text-sm text-muted line-clamp-2">
+                    {cat.description}
+                  </p>
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
     </div>

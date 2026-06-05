@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import {
@@ -9,6 +9,7 @@ import {
   HiHeart,
   HiHome,
   HiMagnifyingGlass,
+  HiEnvelope,
   HiQuestionMarkCircle,
   HiShoppingBag,
   HiSquares2X2,
@@ -19,6 +20,7 @@ import {
 import { useCart } from "@/context/CartContext";
 import { DEFAULT_WHATSAPP_GREETING } from "@/data/site";
 import { getWhatsAppUrl } from "@/lib/order";
+import { buildProductsSearchUrl } from "@/lib/navigation";
 import { handleNavLinkClick } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
 
@@ -39,8 +41,9 @@ const moreLinks = [
   { href: "/categories", label: "Categories", icon: HiSquares2X2 },
   { href: "/wishlist", label: "Wishlist", icon: HiHeart },
   { href: "/about", label: "About", icon: HiUser },
-  { href: "/contact", label: "Contact", icon: HiUser },
+  { href: "/contact", label: "Contact", icon: HiEnvelope },
   { href: "/faq", label: "FAQ", icon: HiQuestionMarkCircle },
+  { href: "/checkout", label: "Checkout", icon: HiShoppingBag },
   {
     href: getWhatsAppUrl(DEFAULT_WHATSAPP_GREETING),
     label: "WhatsApp",
@@ -81,6 +84,7 @@ function TabLink({
 
 export function MobileBottomNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const { totalItems, setIsOpen } = useCart();
   const [moreOpen, setMoreOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -110,9 +114,10 @@ export function MobileBottomNav() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      window.location.href = `/products?search=${encodeURIComponent(query.trim())}`;
-    }
+    const url = buildProductsSearchUrl(query);
+    setSearchOpen(false);
+    setQuery("");
+    router.push(url);
   };
 
   const overlayOpen = moreOpen || searchOpen;

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { ThemeProvider } from "next-themes";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { scrollToTop } from "@/lib/scroll";
@@ -24,13 +23,11 @@ function SmoothScrollOnNavigate() {
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-      <CartProvider>
-        <WishlistProvider>
-          <SmoothScrollOnNavigate />
-          {children}
-        </WishlistProvider>
-      </CartProvider>
-    </ThemeProvider>
+    <CartProvider>
+      <WishlistProvider>
+        <SmoothScrollOnNavigate />
+        {children}
+      </WishlistProvider>
+    </CartProvider>
   );
 }

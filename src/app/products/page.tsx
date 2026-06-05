@@ -27,13 +27,14 @@ function ProductsPageContent() {
   }, [searchParams]);
 
   return (
-    <div className={PAGE_SHELL}>
-      <div className="mb-10 text-center md:text-left">
-        <h1 className="font-display text-4xl font-bold text-gradient">
+    <div className="w-full bg-white">
+      <div className={PAGE_SHELL}>
+      <div className="mb-8 text-center md:mb-10">
+        <h1 className="font-display text-xl font-bold text-foreground sm:text-2xl md:text-3xl">
           Shop All Toys
         </h1>
-        <p className="mt-2 text-muted">
-          {filtered.length} magical toys waiting for you
+        <p className="mt-2 text-sm text-muted sm:text-base">
+          {filtered.length} toys waiting for you
         </p>
       </div>
 
@@ -42,7 +43,7 @@ function ProductsPageContent() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <HiMagnifyingGlass
-              className="h-16 w-16 text-secondary/60"
+              className="h-16 w-16 text-[#c8102e]/40"
               aria-hidden
             />
             <p className="mt-4 text-lg font-semibold text-muted">
@@ -57,6 +58,7 @@ function ProductsPageContent() {
           </div>
         )}
       </div>
+      </div>
     </div>
   );
 }
@@ -67,7 +69,7 @@ export default function ProductsPage() {
       fallback={
         <div className="flex min-h-[50vh] items-center justify-center pt-28">
           <HiCube
-            className="h-12 w-12 animate-bounce text-secondary"
+            className="h-12 w-12 animate-bounce text-[#c8102e]"
             aria-hidden
           />
         </div>

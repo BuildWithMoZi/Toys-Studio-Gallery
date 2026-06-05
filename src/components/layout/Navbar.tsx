@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   HiHeart,
@@ -11,26 +11,18 @@ import {
 } from "react-icons/hi2";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import {
+  buildProductsSearchUrl,
+  isNavLinkActive,
+  MAIN_NAV_LINKS,
+} from "@/lib/navigation";
 import { handleNavLinkClick } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./ThemeToggle";
 import { SiteLogo } from "./SiteLogo";
-
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/products", label: "Shop" },
-  { href: "/categories", label: "Categories" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
-
-function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { totalItems, setIsOpen } = useCart();
   const { items: wishlistItems } = useWishlist();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -57,15 +49,16 @@ export function Navbar() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      window.location.href = `/products?search=${encodeURIComponent(query.trim())}`;
-    }
+    const url = buildProductsSearchUrl(query);
+    setSearchOpen(false);
+    setQuery("");
+    router.push(url);
   };
 
   const navLinkClass = (href: string) =>
     cn(
       "text-[10px] font-semibold uppercase tracking-[0.22em] transition-all xl:text-[11px]",
-      isActive(pathname, href)
+      isNavLinkActive(pathname, href)
         ? "text-[var(--navbar-link-hover)]"
         : "text-[var(--navbar-link)] hover:text-[var(--navbar-link-hover)]"
     );
@@ -73,9 +66,10 @@ export function Navbar() {
   const navPadding = "px-6 md:px-10 lg:px-14";
 
   const iconBtnClass =
-    "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--navbar-ring)] bg-[var(--card)] text-[var(--navbar-logo)] transition-all hover:scale-105 md:h-11 md:w-11";
+    "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 transition-colors hover:border-gray-400 hover:text-gray-900 md:h-11 md:w-11";
 
-  const cartBtnClass = cn(iconBtnClass, "border-[3px] bg-[var(--navbar-bg)]");
+  const cartBtnClass =
+    "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c8102e] bg-[#c8102e] text-white transition-colors hover:bg-[#a00d24] md:h-11 md:w-11";
 
   const closeSearch = () => {
     setSearchOpen(false);
@@ -136,7 +130,7 @@ export function Navbar() {
       ) : (
         <>
           <ul className="hidden min-w-0 flex-1 items-center justify-center gap-4 lg:flex xl:gap-6">
-            {links.map((link) => (
+            {MAIN_NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -152,10 +146,6 @@ export function Navbar() {
 
           <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-2.5 md:gap-3">
             <div className="hidden items-center gap-2 sm:flex md:gap-2.5">
-              <div className="hidden md:block">
-                <ThemeToggle variant="navbar" />
-              </div>
-
               <Link
                 href="/wishlist"
                 scroll={false}
@@ -169,7 +159,7 @@ export function Navbar() {
               >
                 <HiHeart className="h-5 w-5" />
                 {wishlistItems.length > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--navbar-logo)] text-[9px] font-bold text-[var(--navbar-bg)]">
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8102e] text-[9px] font-bold text-white">
                     {wishlistItems.length}
                   </span>
                 )}
@@ -204,7 +194,7 @@ export function Navbar() {
             >
               <HiShoppingBag className="h-[18px] w-[18px] md:h-5 md:w-5" />
               {totalItems > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--navbar-logo)] text-[9px] font-bold text-[var(--navbar-bg)]">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[9px] font-bold text-[#c8102e] ring-1 ring-[#c8102e]">
                   {totalItems}
                 </span>
               )}
@@ -246,12 +236,12 @@ export function Navbar() {
     mobileOpen && !searchOpen ? (
       <div
         className={cn(
-          "border-t border-[var(--navbar-border)] bg-[var(--navbar-bg)] py-4 lg:hidden",
+          "border-t border-gray-100 bg-white py-4 lg:hidden",
           navPadding
         )}
       >
         <ul className="flex flex-col gap-1">
-          {links.map((link) => (
+          {MAIN_NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
@@ -259,7 +249,7 @@ export function Navbar() {
                 onClick={(e) => handleNavLinkClick(e, link.href, pathname)}
                 className={cn(
                   "block py-2.5 text-xs font-semibold uppercase tracking-[0.2em]",
-                  isActive(pathname, link.href)
+                  isNavLinkActive(pathname, link.href)
                     ? "text-[var(--navbar-link-hover)]"
                     : "text-[var(--navbar-link)]"
                 )}
@@ -292,7 +282,15 @@ export function Navbar() {
               </span>
             )}
           </Link>
-          <ThemeToggle variant="navbar" />
+          <Link
+            href="/checkout"
+            scroll={false}
+            onClick={(e) => handleNavLinkClick(e, "/checkout", pathname)}
+            className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--navbar-link)]"
+          >
+            <HiShoppingBag className="h-4 w-4" />
+            Checkout
+          </Link>
         </div>
       </div>
     ) : null;

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   HiBars3,
@@ -15,35 +15,23 @@ import {
 import { SiteLogo } from "@/components/layout/SiteLogo";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import {
+  buildProductsSearchUrl,
+  HERO_CATEGORY_PILLS,
+  HERO_SIDEBAR_LINKS,
+} from "@/lib/navigation";
 import { handleNavLinkClick } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
 
 const HERO_RED = "#c8102e";
 
-const heroCategories = [
-  { label: "Infants", href: "/products?category=plush" },
-  { label: "Books", href: "/products?category=educational" },
-  { label: "Toys", href: "/products" },
-  { label: "Sports", href: "/products?category=outdoor" },
-  { label: "School Items", href: "/products?category=educational" },
-  { label: "Electronics", href: "/products?category=games" },
-  { label: "Contact Us", href: "/contact" },
-];
-
-const sidebarExtraLinks = [
-  { label: "Contact Us", href: "/contact" },
-  { label: "Wishlist", href: "/wishlist" },
-  { label: "Contact", href: "/contact" },
-  { label: "About", href: "/about" },
-  { label: "FAQ", href: "/faq" },
-];
-
-const sidebarCategories = heroCategories.filter(
+const sidebarCategories = HERO_CATEGORY_PILLS.filter(
   (cat) => cat.label !== "Contact Us"
 );
 
 export function HeroHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const { totalItems, setIsOpen } = useCart();
   const { items: wishlistItems } = useWishlist();
   const [query, setQuery] = useState("");
@@ -64,9 +52,10 @@ export function HeroHeader() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      window.location.href = `/products?search=${encodeURIComponent(query.trim())}`;
-    }
+    const url = buildProductsSearchUrl(query);
+    setQuery("");
+    closeSidebar();
+    router.push(url);
   };
 
   const closeSidebar = () => setSidebarOpen(false);
@@ -117,7 +106,7 @@ export function HeroHeader() {
             }
           >
             <HiShoppingBag className="h-6 w-6" />
-            {cartBadge}
+            {totalItems > 0 && cartBadge}
           </button>
         </div>
 
@@ -233,7 +222,7 @@ export function HeroHeader() {
         style={{ backgroundColor: HERO_RED }}
       >
         <div className="mx-auto flex max-w-7xl items-center gap-2 px-3 py-2.5 sm:gap-2.5 sm:px-5 md:justify-center md:gap-3 md:px-6 lg:px-8">
-          {heroCategories.map((cat) => (
+          {HERO_CATEGORY_PILLS.map((cat) => (
             <Link
               key={cat.label}
               href={cat.href}
@@ -295,8 +284,8 @@ export function HeroHeader() {
                   </Link>
                 </li>
               ))}
-              {sidebarExtraLinks.map((link) => (
-                <li key={link.label} className="border-b border-gray-100">
+              {HERO_SIDEBAR_LINKS.map((link) => (
+                <li key={link.href} className="border-b border-gray-100">
                   <Link
                     href={link.href}
                     scroll={false}

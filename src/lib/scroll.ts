@@ -1,4 +1,5 @@
 import type { MouseEvent } from "react";
+import { isExternalHref } from "@/lib/navigation";
 
 export function getScrollBehavior(): ScrollBehavior {
   if (typeof window === "undefined") return "auto";
@@ -21,13 +22,23 @@ function normalizePath(path: string) {
   return base.replace(/\/$/, "") || "/";
 }
 
-/** Same-route: smooth scroll to top. Cross-route: rely on AppProviders scroll handler. */
+/** Same path + query: scroll to top. Otherwise let Next.js navigate. */
 export function handleNavLinkClick(
   e: MouseEvent<HTMLAnchorElement>,
   href: string,
   pathname: string
 ) {
-  if (normalizePath(href) === normalizePath(pathname)) {
+  if (isExternalHref(href)) return;
+  if (typeof window === "undefined") return;
+
+  const target = new URL(href, window.location.origin);
+  const current = new URL(window.location.href);
+
+  const samePath =
+    normalizePath(target.pathname) === normalizePath(pathname);
+  const sameSearch = target.search === current.search;
+
+  if (samePath && sameSearch) {
     e.preventDefault();
     scrollToTop();
   }

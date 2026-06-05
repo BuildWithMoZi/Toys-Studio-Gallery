@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiBolt, HiCheckBadge, HiShoppingBag, HiStar } from "react-icons/hi2";
 import type { Product } from "@/types";
@@ -15,7 +15,6 @@ import { getReviewsForProduct } from "@/data/testimonials";
 import { formatPrice, getDiscountPercent, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { OrderModal } from "@/components/order/OrderForm";
 import { ProductCard } from "@/components/product/ProductCard";
 import { PAGE_SHELL } from "@/lib/utils";
 
@@ -28,7 +27,7 @@ function DetailSectionTitle({
 }) {
   return (
     <div className="mb-6 md:mb-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c8102e]">
         {eyebrow}
       </p>
       <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">
@@ -47,7 +46,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
     product.category;
 
   return (
-    <div className="mt-14 space-y-14 border-t border-card-border pt-14 md:mt-20 md:space-y-20 md:pt-20">
+    <div className="mt-14 space-y-14 border-t border-gray-100 pt-14 md:mt-20 md:space-y-20 md:pt-20">
       <section>
         <DetailSectionTitle
           eyebrow="Recommended"
@@ -77,7 +76,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
           eyebrow="Reviews"
           title="What parents are saying"
         />
-        <div className="mb-4 flex flex-wrap items-center gap-3 rounded-2xl border border-card-border bg-card/60 px-4 py-3">
+        <div className="mb-4 flex flex-wrap items-center gap-3 rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3">
           <div className="flex items-center gap-1 text-accent-yellow">
             {Array.from({ length: 5 }).map((_, i) => (
               <HiStar
@@ -100,7 +99,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
 
         <ul className="grid gap-4 md:grid-cols-3">
           {reviews.map((review) => (
-            <li key={review.id} className="card-toy flex flex-col p-5">
+            <li key={review.id} className="flex flex-col rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
               <div className="flex gap-0.5 text-accent-yellow">
                 {Array.from({ length: review.rating }).map((_, j) => (
                   <HiStar key={j} className="h-4 w-4 fill-current" />
@@ -109,7 +108,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
               <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">
                 &ldquo;{review.text}&rdquo;
               </p>
-              <div className="mt-4 flex items-center gap-3 border-t border-card-border pt-4">
+              <div className="mt-4 flex items-center gap-3 border-t border-gray-100 pt-4">
                 <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
                   <Image
                     src={review.avatar}
@@ -127,7 +126,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
                     {review.role}
                     {review.verified && (
                       <HiCheckBadge
-                        className="h-3.5 w-3.5 text-secondary"
+                        className="h-3.5 w-3.5 text-[#c8102e]"
                         aria-label="Verified"
                       />
                     )}
@@ -143,16 +142,22 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
 }
 
 export function ProductDetailClient({ product }: { product: Product }) {
+  const router = useRouter();
   const [activeImage, setActiveImage] = useState(0);
-  const [orderOpen, setOrderOpen] = useState(false);
   const { addItem } = useCart();
+
+  const handleBuyNow = () => {
+    addItem(product, 1, { openDrawer: false });
+    router.push("/checkout");
+  };
   const discount = getDiscountPercent(product.price, product.originalPrice);
 
   return (
-    <div className={PAGE_SHELL}>
+    <div className="w-full bg-white">
+      <div className={PAGE_SHELL}>
       <div className="grid gap-10 lg:grid-cols-2">
         <div>
-          <div className="relative aspect-square overflow-hidden rounded-3xl card-toy">
+          <div className="relative aspect-square overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm md:rounded-3xl">
             <Image
               src={product.images[activeImage]}
               alt={product.name}
@@ -170,8 +175,8 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 className={cn(
                   "relative h-20 w-20 overflow-hidden rounded-xl border-2 transition-all",
                   activeImage === i
-                    ? "border-secondary scale-105"
-                    : "border-transparent opacity-70"
+                    ? "border-[#c8102e] scale-105"
+                    : "border-gray-200 opacity-70"
                 )}
               >
                 <Image src={img} alt="" fill className="object-cover" />
@@ -196,7 +201,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
             <span className="text-muted">({product.reviewCount} reviews)</span>
           </div>
           <div className="mt-4 flex items-baseline gap-3">
-            <span className="font-display text-3xl font-bold text-secondary">
+            <span className="font-display text-3xl font-bold text-[#c8102e]">
               {formatPrice(product.price)}
             </span>
             {product.originalPrice && (
@@ -209,10 +214,10 @@ export function ProductDetailClient({ product }: { product: Product }) {
             {product.longDescription}
           </p>
           <ul className="mt-4 flex flex-wrap gap-2">
-            <li className="rounded-full bg-primary/80 px-3 py-1 text-sm font-medium">
+            <li className="rounded-full border border-[#c8102e]/20 bg-[#c8102e]/5 px-3 py-1 text-sm font-medium text-foreground">
               Age: {product.ageRange}
             </li>
-            <li className="rounded-full bg-primary/80 px-3 py-1 text-sm font-medium">
+            <li className="rounded-full border border-[#c8102e]/20 bg-[#c8102e]/5 px-3 py-1 text-sm font-medium text-foreground">
               {product.stock} in stock
             </li>
           </ul>
@@ -230,7 +235,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
               variant="secondary"
               size="lg"
               layout="block"
-              onClick={() => setOrderOpen(true)}
+              onClick={handleBuyNow}
             >
               <HiBolt className="h-5 w-5 shrink-0" />
               Buy Now
@@ -241,11 +246,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
 
       <ProductDetailBelowFold product={product} />
 
-      <OrderModal
-        open={orderOpen}
-        onClose={() => setOrderOpen(false)}
-        product={product}
-      />
+      </div>
     </div>
   );
 }

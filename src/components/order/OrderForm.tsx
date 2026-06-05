@@ -1,37 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { FaWhatsapp } from "react-icons/fa";
-import { HiEnvelope, HiXMark } from "react-icons/hi2";
-import { cn } from "@/lib/utils";
-import type { CartItem, OrderFormData, Product } from "@/types";
+import { useState } from "react";
+import { HiEnvelope } from "react-icons/hi2";
+import type { CartItem, OrderFormData } from "@/types";
 import { STORE_LOCATION } from "@/data/site";
 import { buildOrderMessage, getWhatsAppUrl, getMailtoUrl } from "@/lib/order";
 import { Button } from "@/components/ui/Button";
 import { useCart } from "@/context/CartContext";
 
 interface OrderFormProps {
-  product?: Product;
-  defaultQuantity?: number;
-  variant?: "default" | "modal";
   onSuccess?: () => void;
 }
 
-export function OrderForm({
-  product,
-  defaultQuantity = 1,
-  variant = "default",
-  onSuccess,
-}: OrderFormProps) {
+/** Checkout delivery form — cart items come from CartContext. */
+export function OrderForm({ onSuccess }: OrderFormProps) {
   const { items: cartItems, clearCart } = useCart();
   const [form, setForm] = useState<OrderFormData>({
     name: "",
     phone: "",
     address: "",
-    productDetails: product
-      ? `${product.name} (${product.slug})`
-      : "",
-    quantity: defaultQuantity,
+    productDetails: "",
+    quantity: 1,
     notes: "",
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
@@ -39,8 +28,7 @@ export function OrderForm({
   );
   const [message, setMessage] = useState("");
 
-  const items: CartItem[] | undefined =
-    !product && cartItems.length > 0 ? cartItems : undefined;
+  const items: CartItem[] = cartItems;
 
   const update = (field: keyof OrderFormData, value: string | number) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -61,7 +49,7 @@ export function OrderForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          cartItems: items?.map((i) => ({
+          cartItems: items.map((i) => ({
             name: i.product.name,
             quantity: i.quantity,
             price: i.product.price,
@@ -88,7 +76,7 @@ export function OrderForm({
       setMessage(
         "Order sent! Check WhatsApp — we will confirm shortly. Email notification sent to admin."
       );
-      if (items) clearCart();
+      clearCart();
       onSuccess?.();
     } catch {
       setStatus("success");
@@ -104,27 +92,21 @@ export function OrderForm({
     }
   };
 
-  const isModal = variant === "modal";
-
   return (
     <form
       onSubmit={handleSubmit}
-      className={
-        isModal
-          ? "space-y-4"
-          : "card-toy space-y-5 p-6 md:p-8"
-      }
+      id="checkout-form"
+      className="space-y-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm md:p-6"
     >
-      {!isModal && (
-        <h2 className="font-display text-2xl font-bold">Place Your Order</h2>
-      )}
+      <h2 className="font-display text-lg font-bold text-foreground">
+        Delivery Details
+      </h2>
       <p className="text-sm text-muted">
-        Fill in details below — order goes to admin via WhatsApp & Email. Pay on
-        delivery!
+        Enter your details below. Pay on delivery — we confirm via WhatsApp!
       </p>
 
       <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-        <Field label="Full Name *" required>
+        <Field label="Full Name *">
           <input
             required
             value={form.name}
@@ -133,7 +115,7 @@ export function OrderForm({
             placeholder="Parent name"
           />
         </Field>
-        <Field label="Phone Number *" required>
+        <Field label="Phone Number *">
           <input
             required
             type="tel"
@@ -145,7 +127,7 @@ export function OrderForm({
         </Field>
       </div>
 
-      <Field label="Delivery Address *" required>
+      <Field label="Delivery Address *">
         <textarea
           required
           rows={3}
@@ -153,30 +135,6 @@ export function OrderForm({
           onChange={(e) => update("address", e.target.value)}
           className="input-field resize-none"
           placeholder="House no, street, city, pincode"
-        />
-      </Field>
-
-      {!items && (
-        <Field label="Product Details *" required>
-          <input
-            required
-            value={form.productDetails}
-            onChange={(e) => update("productDetails", e.target.value)}
-            className="input-field"
-            placeholder="Toy name or description"
-            readOnly={!!product}
-          />
-        </Field>
-      )}
-
-      <Field label="Quantity *" required>
-        <input
-          required
-          type="number"
-          min={1}
-          value={form.quantity}
-          onChange={(e) => update("quantity", parseInt(e.target.value) || 1)}
-          className="input-field w-32"
         />
       </Field>
 
@@ -191,28 +149,20 @@ export function OrderForm({
       </Field>
 
       {status === "success" && (
-        <div className="rounded-2xl bg-success/15 p-4 text-success text-sm font-medium">
+        <div className="rounded-2xl bg-success/15 p-4 text-sm font-medium text-success">
           {message}
         </div>
       )}
 
       <Button
         type="submit"
-        variant="whatsapp"
+        variant="primary"
         size="lg"
         layout="block"
-        className="btn-action-full min-h-[3.25rem] sm:min-h-0"
+        className="!rounded-xl !bg-gray-900 !text-white hover:!bg-gray-800 !shadow-none min-h-[3.25rem] sm:min-h-0"
         disabled={status === "loading"}
       >
-        <FaWhatsapp className="h-5 w-5 shrink-0" />
-        {status === "loading" ? (
-          "Sending..."
-        ) : (
-          <>
-            <span className="sm:hidden">Order on WhatsApp</span>
-            <span className="hidden sm:inline">Order via WhatsApp & Email</span>
-          </>
-        )}
+        {status === "loading" ? "Sending..." : "Continue to Checkout"}
       </Button>
 
       <p className="flex items-center justify-center gap-2 text-xs text-muted">
@@ -223,92 +173,12 @@ export function OrderForm({
   );
 }
 
-interface OrderModalProps {
-  open: boolean;
-  onClose: () => void;
-  product?: Product;
-  defaultQuantity?: number;
-}
-
-export function OrderModal({
-  open,
-  onClose,
-  product,
-  defaultQuantity = 1,
-}: OrderModalProps) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  return (
-    <div
-      className="fixed inset-0 z-[90] flex items-end justify-center sm:items-center sm:p-4"
-      role="presentation"
-    >
-      <button
-        type="button"
-        className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
-        aria-label="Close order form"
-        onClick={onClose}
-      />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="order-modal-title"
-        className={cn(
-          "relative z-10 flex w-full max-h-[min(92dvh,100%)] flex-col overflow-hidden bg-card shadow-2xl",
-          "rounded-t-3xl border border-card-border sm:max-h-[90vh] sm:max-w-lg sm:rounded-3xl"
-        )}
-      >
-        <div className="mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-card-border sm:hidden" />
-        <div className="flex shrink-0 items-center justify-between border-b border-card-border px-4 py-3 sm:px-6">
-          <h2
-            id="order-modal-title"
-            className="font-display text-lg font-bold sm:text-xl"
-          >
-            Place Your Order
-          </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full p-2 transition-colors hover:bg-primary/80"
-            aria-label="Close"
-          >
-            <HiXMark className="h-6 w-6" />
-          </button>
-        </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 sm:px-6 sm:pb-6 sm:pt-4">
-          <OrderForm
-            product={product}
-            defaultQuantity={defaultQuantity}
-            variant="modal"
-            onSuccess={onClose}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function Field({
   label,
   children,
-  required,
 }: {
   label: string;
   children: React.ReactNode;
-  required?: boolean;
 }) {
   return (
     <label className="block">

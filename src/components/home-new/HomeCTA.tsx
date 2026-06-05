@@ -1,6 +1,9 @@
 "use client";
 
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   HiHeart,
   HiQuestionMarkCircle,
@@ -10,6 +13,7 @@ import {
 import { FaWhatsapp } from "react-icons/fa";
 import { DEFAULT_WHATSAPP_GREETING, SITE, STORE_LOCATION } from "@/data/site";
 import { getWhatsAppUrl } from "@/lib/order";
+import { handleNavLinkClick } from "@/lib/scroll";
 import {
   homeFullInner,
   homeFullSection,
@@ -30,6 +34,8 @@ const ctaLinks = [
 ];
 
 export function HomeCTA() {
+  const pathname = usePathname();
+
   return (
     <section className={`${homeFullSection} pb-10 md:pb-12`} aria-label="Get started">
       <h2 className={homeFullTitle}>Ready for your next adventure?</h2>
@@ -45,6 +51,12 @@ export function HomeCTA() {
             <Link
               key={label}
               href={href}
+              scroll={false}
+              onClick={
+                external
+                  ? undefined
+                  : (e) => handleNavLinkClick(e, href, pathname)
+              }
               {...(external
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
