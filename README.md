@@ -25,29 +25,27 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy to GitHub Pages (free static hosting)
 
-**Important:** `main` branch root has source code + README — that is why selecting **main / (root)** shows only README. The built website lives in the **`docs/`** folder on `main`.
-
-### One-time GitHub Settings
+### One-time GitHub Settings (required)
 
 1. Repo → **Settings → Pages → Build and deployment**
-2. **Source:** Deploy from a branch
-3. **Branch:** **`main`**
-4. **Folder:** **`/docs`** (NOT `/ (root)`)
-5. Save
+2. **Source:** **GitHub Actions** (NOT “Deploy from a branch”)
+3. Save
+
+If Source is still **main / docs** or **gh-pages / root**, GitHub may keep serving an **old cached build** (PlayJoy) even after a successful deploy.
 
 ### Auto deploy on every push to main
 
-1. Merge your latest code into **`main`** and push
-2. GitHub Actions runs `npm run build:pages` and copies the build into **`docs/`** on `main`
+1. Push to **`main`**
+2. Action **“Deploy to GitHub Pages”** runs → builds `out/` → publishes via GitHub Actions
 3. Site URL: `https://buildwithmozi.github.io/Toys-Studio-Gallery/`
 
-The old **`gh-pages`** branch is no longer used — switch Pages to **`main` → `/docs`**.
+**Manual redeploy:** Actions tab → **Deploy to GitHub Pages** → **Run workflow**
 
-**Local static preview (same as live docs folder):**
+**Local static preview:**
 
 ```bash
-npm run deploy:docs
-npx serve docs
+npm run build:pages
+npx serve out
 ```
 
 On GitHub Pages, `/api/order` (email) does not run — **WhatsApp orders work fully**.
