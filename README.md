@@ -25,17 +25,29 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy to GitHub Pages (free static hosting)
 
-1. Push to **`main`** — GitHub Actions runs `npm run build:pages` and publishes the **`out/`** folder to the **`gh-pages`** branch.
-2. In the repo: **Settings → Pages → Build and deployment**:
-   - **Source:** Deploy from a branch
-   - **Branch:** **`gh-pages`** → **`/ (root)`**
-3. Open: `https://<username>.github.io/Toys-Studio-Gallery/`
+**Important:** `main` branch root has source code + README — that is why selecting **main / (root)** shows only README. The built website lives in the **`docs/`** folder on `main`.
 
-**Local static preview:**
+### One-time GitHub Settings
+
+1. Repo → **Settings → Pages → Build and deployment**
+2. **Source:** Deploy from a branch
+3. **Branch:** **`main`**
+4. **Folder:** **`/docs`** (NOT `/ (root)`)
+5. Save
+
+### Auto deploy on every push to main
+
+1. Merge your latest code into **`main`** and push
+2. GitHub Actions runs `npm run build:pages` and copies the build into **`docs/`** on `main`
+3. Site URL: `https://buildwithmozi.github.io/Toys-Studio-Gallery/`
+
+The old **`gh-pages`** branch is no longer used — switch Pages to **`main` → `/docs`**.
+
+**Local static preview (same as live docs folder):**
 
 ```bash
-npm run build:pages
-npx serve out
+npm run deploy:docs
+npx serve docs
 ```
 
 On GitHub Pages, `/api/order` (email) does not run — **WhatsApp orders work fully**.
