@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import Link from "next/link";
 import { HiHeart, HiShoppingBag, HiStar } from "react-icons/hi2";
 import { useCart } from "@/context/CartContext";
@@ -21,7 +21,7 @@ export function ProductCard({ product }: { product: Product }) {
     <article className="group relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all duration-300 md:rounded-2xl md:hover:-translate-y-1 md:hover:shadow-md">
       <Link href={detailHref} className="block">
         <div className="relative aspect-[4/5] overflow-hidden bg-gray-50 sm:aspect-square">
-          <Image
+          <RemoteImage
             src={product.images[0]}
             alt={product.name}
             fill

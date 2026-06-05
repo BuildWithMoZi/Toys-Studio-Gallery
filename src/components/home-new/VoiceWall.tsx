@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import { HiStar } from "react-icons/hi2";
 import { testimonials } from "@/data/testimonials";
 import {
@@ -24,7 +24,7 @@ export function VoiceWall() {
               className="flex w-[min(88vw,420px)] shrink-0 gap-4 rounded-2xl border border-gray-100 bg-gray-50/80 p-4 sm:w-[400px] sm:p-5 md:rounded-3xl"
             >
               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full ring-2 ring-white">
-                <Image
+                <RemoteImage
                   src={t.avatar}
                   alt={t.name}
                   fill

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import Link from "next/link";
 import { getNewArrivals, getOnSale } from "@/data/products";
 import {
@@ -30,7 +30,7 @@ export function NewArrivalsRail() {
               className="group relative w-[min(44vw,200px)] shrink-0 overflow-hidden rounded-2xl border border-gray-100 shadow-sm sm:w-[220px] md:w-[240px] md:rounded-3xl"
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 sm:aspect-square">
-                <Image
+                  <RemoteImage
                   src={p.images[0]}
                   alt={p.name}
                   fill

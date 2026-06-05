@@ -1,7 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { SHOP_BY_AGE } from "@/data/images";
-import { assetPath } from "@/lib/utils";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 
 export function ShopByAge() {
   return (
@@ -21,8 +20,8 @@ export function ShopByAge() {
               href={age.href}
               className="group w-[44vw] max-w-[220px] shrink-0 overflow-hidden rounded-2xl shadow-sm transition-transform duration-300 hover:scale-[1.02] hover:shadow-md sm:w-full sm:max-w-none md:rounded-3xl"
             >
-              <Image
-                src={assetPath(age.image)}
+              <RemoteImage
+                src={age.image}
                 alt={age.label}
                 width={320}
                 height={400}

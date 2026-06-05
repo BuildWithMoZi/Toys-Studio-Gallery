@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
@@ -117,7 +117,7 @@ export function HotNewArrivalsSlider() {
                   className="group block w-full overflow-hidden rounded-lg border border-gray-100 bg-gray-50 shadow-sm transition-shadow hover:shadow-md sm:rounded-xl md:rounded-2xl"
                 >
                   <div className="relative aspect-[3/4] w-full overflow-hidden sm:aspect-[4/5] md:aspect-[16/11] lg:aspect-[16/10]">
-                    <Image
+                    <RemoteImage
                       src={src}
                       alt={`Hot new arrival ${i + 1}`}
                       fill

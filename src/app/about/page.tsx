@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import { FaWhatsapp } from "react-icons/fa";
 import { HiShieldCheck, HiTruck } from "react-icons/hi2";
 import { Button } from "@/components/ui/Button";
@@ -45,7 +45,7 @@ export default function AboutPage() {
         </div>
 
         <div className="relative mx-auto mt-8 aspect-video max-w-2xl overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm md:mt-10 md:rounded-3xl">
-          <Image
+          <RemoteImage
             src={toyImage(3)}
             alt="Happy kids playing"
             fill

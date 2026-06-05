@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -85,7 +85,7 @@ export function CartDrawer() {
                   className="flex gap-3 rounded-2xl border border-gray-100 p-3"
                 >
                   <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl">
-                    <Image
+                    <RemoteImage
                       src={item.product.images[0]}
                       alt={item.product.name}
                       fill

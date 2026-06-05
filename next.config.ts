@@ -6,6 +6,7 @@ const repoBasePath = "/Toys-Studio-Gallery";
 const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_BASE_PATH: isGithubPages ? repoBasePath : "",
+    NEXT_PUBLIC_STATIC_EXPORT: isGithubPages ? "true" : "",
   },
   ...(isGithubPages
     ? {

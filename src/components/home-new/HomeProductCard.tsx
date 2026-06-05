@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import Link from "next/link";
 import type { Product } from "@/types";
 import { categories } from "@/data/categories";
@@ -27,7 +27,7 @@ export function HomeProductCard({ product }: { product: Product }) {
       )}
     >
       <div className="relative aspect-square overflow-hidden bg-gray-50">
-        <Image
+        <RemoteImage
           src={product.images[0]}
           alt={product.name}
           fill

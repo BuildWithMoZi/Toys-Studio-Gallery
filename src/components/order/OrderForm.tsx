@@ -43,6 +43,18 @@ export function OrderForm({ onSuccess }: OrderFormProps) {
 
     window.open(waUrl, "_blank");
 
+    const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === "true";
+
+    if (isStaticExport) {
+      setStatus("success");
+      setMessage(
+        "WhatsApp opened with your order! We will confirm shortly."
+      );
+      clearCart();
+      onSuccess?.();
+      return;
+    }
+
     try {
       const res = await fetch("/api/order", {
         method: "POST",

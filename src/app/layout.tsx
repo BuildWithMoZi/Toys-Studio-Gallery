@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fredoka, Nunito } from "next/font/google";
-import { SITE_META } from "@/data/site";
+import { SITE, SITE_META, SITE_URL, absoluteUrl } from "@/data/site";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { LayoutNavbar } from "@/components/layout/Navbar";
@@ -21,17 +21,46 @@ const fredoka = Fredoka({
   weight: ["400", "500", "600", "700"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#c8102e",
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_META.title,
     template: SITE_META.titleTemplate,
   },
   description: SITE_META.description,
   keywords: [...SITE_META.keywords],
+  applicationName: SITE.name,
   openGraph: {
     title: SITE_META.openGraph.title,
     description: SITE_META.openGraph.description,
     type: "website",
+    url: absoluteUrl("/"),
+    siteName: SITE.name,
+    locale: "en_IN",
+    images: [
+      {
+        url: absoluteUrl("/logo.png"),
+        width: 512,
+        height: 512,
+        alt: SITE.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_META.openGraph.title,
+    description: SITE_META.openGraph.description,
+    images: [absoluteUrl("/logo.png")],
+  },
+  icons: {
+    icon: absoluteUrl("/logo.png"),
+    apple: absoluteUrl("/logo.png"),
   },
 };
 

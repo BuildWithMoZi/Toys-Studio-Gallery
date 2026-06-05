@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiBolt, HiCheckBadge, HiShoppingBag, HiStar } from "react-icons/hi2";
@@ -110,7 +110,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
               </p>
               <div className="mt-4 flex items-center gap-3 border-t border-gray-100 pt-4">
                 <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
-                  <Image
+                  <RemoteImage
                     src={review.avatar}
                     alt={review.author}
                     fill
@@ -143,7 +143,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
 
 export function ProductDetailClient({ product }: { product: Product }) {
   const router = useRouter();
-  const [activeImage, setActiveImage] = useState(0);
+  const [activeRemoteImage, setActiveRemoteImage] = useState(0);
   const { addItem } = useCart();
 
   const handleBuyNow = () => {
@@ -158,8 +158,8 @@ export function ProductDetailClient({ product }: { product: Product }) {
       <div className="grid gap-10 lg:grid-cols-2">
         <div>
           <div className="relative aspect-square overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm md:rounded-3xl">
-            <Image
-              src={product.images[activeImage]}
+            <RemoteImage
+              src={product.images[activeRemoteImage]}
               alt={product.name}
               fill
               className="object-cover"
@@ -171,15 +171,15 @@ export function ProductDetailClient({ product }: { product: Product }) {
               <button
                 key={i}
                 type="button"
-                onClick={() => setActiveImage(i)}
+                onClick={() => setActiveRemoteImage(i)}
                 className={cn(
                   "relative h-20 w-20 overflow-hidden rounded-xl border-2 transition-all",
-                  activeImage === i
+                  activeRemoteImage === i
                     ? "border-[#c8102e] scale-105"
                     : "border-gray-200 opacity-70"
                 )}
               >
-                <Image src={img} alt="" fill className="object-cover" />
+                <RemoteImage src={img} alt="" fill className="object-cover" />
               </button>
             ))}
           </div>

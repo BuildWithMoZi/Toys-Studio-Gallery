@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import Link from "next/link";
 import { categories } from "@/data/categories";
 import { CategoryIcon } from "@/components/category/CategoryIcon";
@@ -40,7 +40,7 @@ export default function CategoriesPage() {
               className="category-card group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#c8102e]/20 hover:shadow-md md:rounded-3xl"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-50">
-                <Image
+                    <RemoteImage
                   src={cat.image}
                   alt={cat.name}
                   fill

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { FaWhatsapp } from "react-icons/fa";
@@ -8,7 +7,7 @@ import gsap from "gsap";
 import { HeroHeader } from "@/components/home-new/HeroHeader";
 import { DEFAULT_WHATSAPP_GREETING } from "@/data/site";
 import { getWhatsAppUrl } from "@/lib/order";
-import { assetPath } from "@/lib/utils";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 
 export function HeroPortal() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -35,17 +34,16 @@ export function HeroPortal() {
       <HeroHeader />
 
       <div className="relative min-h-0 flex-1 overflow-hidden">
-        {/* Mobile only — tablet/desktop unchanged */}
-        <Image
-          src={assetPath("/hero/mobile-view-hero-banner.png")}
+        <RemoteImage
+          src="/hero/mobile-view-hero-banner.png"
           alt="Luxury ride-on toys for kids"
           fill
           priority
           sizes="100vw"
           className="object-cover object-center md:hidden"
         />
-        <Image
-          src={assetPath("/hero/hero-banner.png")}
+        <RemoteImage
+          src="/hero/hero-banner.png"
           alt="Luxury ride-on toys for kids"
           fill
           priority

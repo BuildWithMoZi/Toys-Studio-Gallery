@@ -27,6 +27,14 @@ export const STORE_LOCATION = {
   },
 } as const;
 
+/** Public site URL — set NEXT_PUBLIC_SITE_URL in production (no trailing slash). */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.NEXT_PUBLIC_BASE_PATH
+    ? `https://buildwithmozi.github.io${process.env.NEXT_PUBLIC_BASE_PATH}`
+    : "http://localhost:3000")
+).replace(/\/$/, "");
+
 export const SITE_META = {
   title: `${SITE.name} — ${SITE.tagline}`,
   titleTemplate: `%s | ${SITE.name}`,
@@ -45,6 +53,13 @@ export const SITE_META = {
     description: `${SITE.tagline} — ${SITE.description}`,
   },
 } as const;
+
+/** Absolute URL for metadata, sitemap, and social previews. */
+export function absoluteUrl(path = "/"): string {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  if (normalized === "/") return `${SITE_URL}/`;
+  return `${SITE_URL}${normalized}`;
+}
 
 export function getDirectionsUrl() {
   const { lat, lng } = STORE_LOCATION.coordinates;

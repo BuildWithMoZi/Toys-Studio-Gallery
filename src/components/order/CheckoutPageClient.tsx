@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { RemoteImage } from "@/components/ui/RemoteImage";
 import Link from "next/link";
 import { HiChevronLeft, HiMinus, HiPlus, HiXMark } from "react-icons/hi2";
 import { useCart } from "@/context/CartContext";
@@ -72,7 +72,7 @@ export function CheckoutPageClient() {
                         href={`/products/${item.product.slug}`}
                         className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border border-gray-100 bg-gray-50 sm:h-28 sm:w-28"
                       >
-                        <Image
+                        <RemoteImage
                           src={item.product.images[0]}
                           alt={item.product.name}
                           fill
