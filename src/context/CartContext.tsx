@@ -12,7 +12,7 @@ import type { CartItem, Product } from "@/types";
 
 interface CartContextValue {
   items: CartItem[];
-  addItem: (product: Product, qty?: number) => void;
+  addItem: (product: Product, qty?: number, options?: { openDrawer?: boolean }) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -23,7 +23,7 @@ interface CartContextValue {
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
-const STORAGE_KEY = "playjoy-cart";
+const STORAGE_KEY = "safal-toy-studio-cart";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -46,20 +46,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, hydrated]);
 
-  const addItem = useCallback((product: Product, qty = 1) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.product.id === product.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.product.id === product.id
-            ? { ...i, quantity: i.quantity + qty }
-            : i
-        );
+  const addItem = useCallback(
+    (product: Product, qty = 1, options?: { openDrawer?: boolean }) => {
+      setItems((prev) => {
+        const existing = prev.find((i) => i.product.id === product.id);
+        if (existing) {
+          return prev.map((i) =>
+            i.product.id === product.id
+              ? { ...i, quantity: i.quantity + qty }
+              : i
+          );
+        }
+        return [...prev, { product, quantity: qty }];
+      });
+      if (options?.openDrawer !== false) {
+        setIsOpen(true);
       }
-      return [...prev, { product, quantity: qty }];
-    });
-    setIsOpen(true);
-  }, []);
+    },
+    []
+  );
 
   const removeItem = useCallback((productId: string) => {
     setItems((prev) => prev.filter((i) => i.product.id !== productId));

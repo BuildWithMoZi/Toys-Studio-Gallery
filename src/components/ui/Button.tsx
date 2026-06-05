@@ -1,29 +1,33 @@
 "use client";
 
+import Link from "next/link";
+import { isExternalHref, isInternalHref } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 type Variant = "primary" | "secondary" | "outline" | "ghost" | "whatsapp";
 type Size = "sm" | "md" | "lg";
 type Layout = "block" | "inline";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
   variant?: Variant;
   size?: Size;
   /** block = full-width on mobile (default for CTAs) */
   layout?: Layout;
   href?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
   children: React.ReactNode;
 }
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-secondary text-white shadow-md shadow-secondary/20 hover:bg-secondary/90 sm:shadow-lg sm:shadow-secondary/25",
+    "bg-[#c8102e] text-white shadow-md shadow-[#c8102e]/20 hover:bg-[#a00d24] sm:shadow-lg sm:shadow-[#c8102e]/25",
   secondary:
-    "bg-secondary-ii text-white shadow-md shadow-secondary-ii/20 hover:bg-secondary-ii/90 sm:shadow-lg sm:shadow-secondary-ii/25",
+    "bg-[#a00d24] text-white shadow-md shadow-[#a00d24]/20 hover:bg-[#8b0b1f] sm:shadow-lg",
   outline:
-    "border-2 border-secondary bg-transparent text-secondary hover:bg-secondary hover:text-white dark:text-secondary dark:hover:text-white",
+    "border-2 border-[#c8102e] bg-transparent text-[#c8102e] hover:bg-[#c8102e] hover:text-white",
   ghost:
-    "bg-transparent text-foreground shadow-none hover:bg-primary/80",
+    "bg-transparent text-foreground shadow-none hover:bg-[#c8102e]/8",
   whatsapp:
     "bg-[#25D366] text-white shadow-md shadow-[#25D366]/30 hover:bg-[#20bd5a] sm:shadow-lg",
 };
@@ -46,6 +50,7 @@ export function Button({
   className,
   href,
   children,
+  onClick,
   ...props
 }: ButtonProps) {
   const classes = cn(
@@ -57,15 +62,29 @@ export function Button({
   );
 
   if (href) {
+    if (isInternalHref(href)) {
+      return (
+        <Link href={href} className={classes} onClick={onClick}>
+          {children}
+        </Link>
+      );
+    }
     return (
-      <a href={href} className={classes}>
+      <a
+        href={href}
+        className={classes}
+        onClick={onClick}
+        {...(isExternalHref(href)
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : {})}
+      >
         {children}
       </a>
     );
   }
 
   return (
-    <button className={classes} {...props}>
+    <button className={classes} onClick={onClick} {...props}>
       {children}
     </button>
   );

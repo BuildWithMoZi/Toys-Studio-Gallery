@@ -3,12 +3,10 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const adminEmail =
-      process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin@playjoytoys.com";
-
+    const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
     const { SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_PORT } = process.env;
 
-    if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+    if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !adminEmail) {
       return NextResponse.json({
         success: true,
         fallback: true,

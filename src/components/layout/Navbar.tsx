@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   HiHeart,
@@ -11,36 +11,23 @@ import {
 } from "react-icons/hi2";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import {
+  buildProductsSearchUrl,
+  isNavLinkActive,
+  MAIN_NAV_LINKS,
+} from "@/lib/navigation";
 import { handleNavLinkClick } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./ThemeToggle";
+import { SiteLogo } from "./SiteLogo";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/products", label: "Shop" },
-  { href: "/categories", label: "Categories" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
-
-function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
-
-export function Navbar({
-  variant = "fixed",
-}: {
-  variant?: "fixed" | "hero-floating" | "scroll-pill";
-}) {
+export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { totalItems, setIsOpen } = useCart();
   const { items: wishlistItems } = useWishlist();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const isHeroFloating = variant === "hero-floating";
-  const isScrollPill = variant === "scroll-pill";
 
   useEffect(() => {
     setMobileOpen(false);
@@ -62,41 +49,27 @@ export function Navbar({
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      window.location.href = `/products?search=${encodeURIComponent(query.trim())}`;
-    }
+    const url = buildProductsSearchUrl(query);
+    setSearchOpen(false);
+    setQuery("");
+    router.push(url);
   };
 
   const navLinkClass = (href: string) =>
     cn(
       "text-[10px] font-semibold uppercase tracking-[0.22em] transition-all xl:text-[11px]",
-      isScrollPill && "rounded-full px-3 py-2",
-      isActive(pathname, href)
-        ? isScrollPill
-          ? "bg-card text-[var(--navbar-link-hover)] shadow-sm ring-1 ring-[var(--navbar-ring)]/40"
-          : "text-[var(--navbar-link-hover)]"
-        : "text-[var(--navbar-link)] hover:text-[var(--navbar-link-hover)]",
-      isScrollPill &&
-        !isActive(pathname, href) &&
-        "hover:bg-card/60"
+      isNavLinkActive(pathname, href)
+        ? "text-[var(--navbar-link-hover)]"
+        : "text-[var(--navbar-link)] hover:text-[var(--navbar-link-hover)]"
     );
 
-  const navPadding = isHeroFloating
-    ? "px-5 md:px-7 lg:px-8"
-    : isScrollPill
-      ? "px-5 md:px-6"
-      : "px-6 md:px-10 lg:px-14";
+  const navPadding = "px-6 md:px-10 lg:px-14";
 
-  const iconBtnClass = cn(
-    "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--navbar-ring)] text-[var(--navbar-logo)] transition-all hover:scale-105 md:h-11 md:w-11",
-    isScrollPill ? "bg-card shadow-md" : "bg-[var(--card)]"
-  );
+  const iconBtnClass =
+    "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 transition-colors hover:border-gray-400 hover:text-gray-900 md:h-11 md:w-11";
 
-  const cartBtnClass = cn(
-    iconBtnClass,
-    "border-[3px]",
-    isScrollPill ? "bg-card" : "bg-[var(--navbar-bg)]"
-  );
+  const cartBtnClass =
+    "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c8102e] bg-[#c8102e] text-white transition-colors hover:bg-[#a00d24] md:h-11 md:w-11";
 
   const closeSearch = () => {
     setSearchOpen(false);
@@ -121,18 +94,9 @@ export function Navbar({
         href="/"
         scroll={false}
         onClick={(e) => handleNavLinkClick(e, "/", pathname)}
-        className={cn(
-          "relative z-10 shrink-0 font-display font-bold leading-none tracking-tight text-[var(--navbar-logo)] transition-opacity hover:opacity-80",
-          isScrollPill ? "text-xl md:text-[1.35rem]" : "text-[1.35rem] md:text-2xl"
-        )}
+        className="relative z-10 shrink-0 transition-opacity hover:opacity-80"
       >
-          {isScrollPill && (
-            <span
-              className="absolute -left-1 top-1/2 hidden h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-secondary md:block"
-              aria-hidden
-            />
-          )}
-          <span className={isScrollPill ? "md:pl-2" : undefined}>PlayJoy</span>
+        <SiteLogo className="h-10 md:h-11" />
       </Link>
 
       {searchOpen ? (
@@ -154,9 +118,7 @@ export function Navbar({
               if (!canSubmitSearch) closeSearch();
             }}
             className={iconBtnClass}
-            aria-label={
-              canSubmitSearch ? "Search toys" : "Close search"
-            }
+            aria-label={canSubmitSearch ? "Search toys" : "Close search"}
           >
             {canSubmitSearch ? (
               <HiMagnifyingGlass className="h-5 w-5" />
@@ -167,13 +129,8 @@ export function Navbar({
         </form>
       ) : (
         <>
-          <ul
-            className={cn(
-              "hidden min-w-0 flex-1 items-center justify-center lg:flex",
-              isScrollPill ? "gap-1 xl:gap-1.5" : "gap-4 xl:gap-6"
-            )}
-          >
-            {links.map((link) => (
+          <ul className="hidden min-w-0 flex-1 items-center justify-center gap-4 lg:flex xl:gap-6">
+            {MAIN_NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -189,10 +146,6 @@ export function Navbar({
 
           <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-2.5 md:gap-3">
             <div className="hidden items-center gap-2 sm:flex md:gap-2.5">
-              <div className="hidden md:block">
-                <ThemeToggle variant="navbar" />
-              </div>
-
               <Link
                 href="/wishlist"
                 scroll={false}
@@ -206,7 +159,7 @@ export function Navbar({
               >
                 <HiHeart className="h-5 w-5" />
                 {wishlistItems.length > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--navbar-logo)] text-[9px] font-bold text-[var(--navbar-bg)]">
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8102e] text-[9px] font-bold text-white">
                     {wishlistItems.length}
                   </span>
                 )}
@@ -241,7 +194,7 @@ export function Navbar({
             >
               <HiShoppingBag className="h-[18px] w-[18px] md:h-5 md:w-5" />
               {totalItems > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--navbar-logo)] text-[9px] font-bold text-[var(--navbar-bg)]">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[9px] font-bold text-[#c8102e] ring-1 ring-[#c8102e]">
                   {totalItems}
                 </span>
               )}
@@ -279,141 +232,80 @@ export function Navbar({
     </nav>
   );
 
-  const panels = (
-    <>
-      {mobileOpen && !searchOpen && (
-        <div
-          className={cn(
-            "border-t border-[var(--navbar-border)] py-4 lg:hidden",
-            isScrollPill
-              ? "bg-[var(--navbar-bg)] md:bg-card/95"
-              : "bg-[var(--navbar-bg)]",
-            navPadding
-          )}
-        >
-          <ul className="flex flex-col gap-1">
-            {links.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  scroll={false}
-                  onClick={(e) => handleNavLinkClick(e, link.href, pathname)}
-                  className={cn(
-                    "block py-2.5 text-xs font-semibold uppercase tracking-[0.2em]",
-                    isActive(pathname, link.href)
-                      ? "text-[var(--navbar-link-hover)]"
-                      : "text-[var(--navbar-link)]"
-                  )}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-[var(--navbar-border)] pt-4">
-            <button
-              type="button"
-              onClick={openSearch}
-              className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--navbar-link)]"
-            >
-              <HiMagnifyingGlass className="h-4 w-4" />
-              Search
-            </button>
-            <Link
-              href="/wishlist"
-              scroll={false}
-              onClick={(e) => handleNavLinkClick(e, "/wishlist", pathname)}
-              className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--navbar-link)]"
-            >
-              <HiHeart className="h-4 w-4" />
-              Wishlist
-              {wishlistItems.length > 0 && (
-                <span className="text-[var(--navbar-logo)]">
-                  ({wishlistItems.length})
-                </span>
-              )}
-            </Link>
-            <ThemeToggle variant="navbar" />
-          </div>
+  const panels =
+    mobileOpen && !searchOpen ? (
+      <div
+        className={cn(
+          "border-t border-gray-100 bg-white py-4 lg:hidden",
+          navPadding
+        )}
+      >
+        <ul className="flex flex-col gap-1">
+          {MAIN_NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                scroll={false}
+                onClick={(e) => handleNavLinkClick(e, link.href, pathname)}
+                className={cn(
+                  "block py-2.5 text-xs font-semibold uppercase tracking-[0.2em]",
+                  isNavLinkActive(pathname, link.href)
+                    ? "text-[var(--navbar-link-hover)]"
+                    : "text-[var(--navbar-link)]"
+                )}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-[var(--navbar-border)] pt-4">
+          <button
+            type="button"
+            onClick={openSearch}
+            className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--navbar-link)]"
+          >
+            <HiMagnifyingGlass className="h-4 w-4" />
+            Search
+          </button>
+          <Link
+            href="/wishlist"
+            scroll={false}
+            onClick={(e) => handleNavLinkClick(e, "/wishlist", pathname)}
+            className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--navbar-link)]"
+          >
+            <HiHeart className="h-4 w-4" />
+            Wishlist
+            {wishlistItems.length > 0 && (
+              <span className="text-[var(--navbar-logo)]">
+                ({wishlistItems.length})
+              </span>
+            )}
+          </Link>
+          <Link
+            href="/checkout"
+            scroll={false}
+            onClick={(e) => handleNavLinkClick(e, "/checkout", pathname)}
+            className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--navbar-link)]"
+          >
+            <HiShoppingBag className="h-4 w-4" />
+            Checkout
+          </Link>
         </div>
-      )}
-    </>
-  );
-
-  if (isScrollPill) {
-    return (
-      <header className="relative z-20 w-full md:px-6 md:pt-4">
-        <div
-          className={cn(
-            "w-full border-b border-[var(--navbar-border)] bg-[var(--navbar-bg)]/95 backdrop-blur-md",
-            "md:mx-auto md:max-w-6xl md:overflow-hidden md:rounded-full md:border md:border-[var(--navbar-border)] md:shadow-[var(--scroll-nav-shadow)] md:ring-1 md:ring-[var(--scroll-nav-glow)]",
-            mobileOpen && "md:rounded-3xl"
-          )}
-        >
-          {navInner}
-          {panels}
-        </div>
-      </header>
-    );
-  }
+      </div>
+    ) : null;
 
   return (
-    <header
-      className={cn(
-        "w-full bg-[var(--navbar-bg)]",
-        isHeroFloating
-          ? "relative z-20 shrink-0"
-          : "fixed left-0 right-0 top-0 z-50 border-b border-[var(--navbar-border)]"
-      )}
-    >
+    <header className="fixed left-0 right-0 top-7 z-50 w-full border-b border-[var(--navbar-border)] bg-[var(--navbar-bg)]">
       {navInner}
       {panels}
     </header>
   );
 }
 
-const HERO_ID = "home-hero";
-
-/** Global navbar — hidden on home; hero embeds its own floating bar. */
+/** Global navbar — hidden on home; hero embeds its own header. */
 export function LayoutNavbar() {
   const pathname = usePathname();
   if (pathname === "/") return null;
-  return <Navbar variant="fixed" />;
-}
-
-/** Home: pill navbar after hero scrolls out of view. */
-export function HomeScrollNavbar() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const hero = document.getElementById(HERO_ID);
-    if (!hero) return;
-
-    const update = () => {
-      setVisible(hero.getBoundingClientRect().bottom <= 0);
-    };
-
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
-  return (
-    <div
-      className={cn(
-        "fixed left-0 right-0 top-0 z-50 transition-[transform,opacity] duration-300 ease-out",
-        visible
-          ? "translate-y-0 opacity-100"
-          : "pointer-events-none -translate-y-full opacity-0"
-      )}
-      aria-hidden={!visible}
-    >
-      <Navbar variant="scroll-pill" />
-    </div>
-  );
+  return <Navbar />;
 }

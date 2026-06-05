@@ -1,3 +1,4 @@
+import { SITE, STORE_LOCATION } from "@/data/site";
 import type { CartItem, OrderFormData } from "@/types";
 import { formatPrice } from "./utils";
 
@@ -5,7 +6,7 @@ export function buildOrderMessage(
   data: OrderFormData,
   cartItems?: CartItem[]
 ): string {
-  const site = process.env.NEXT_PUBLIC_SITE_NAME || "PlayJoy Toys";
+  const site = process.env.NEXT_PUBLIC_SITE_NAME || SITE.name;
   let msg = `*New Order — ${site}*\n\n`;
   msg += `*Name:* ${data.name}\n`;
   msg += `*Phone:* ${data.phone}\n`;
@@ -32,13 +33,14 @@ export function buildOrderMessage(
 }
 
 export function getWhatsAppUrl(message: string) {
-  const phone = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || "919876543210";
+  const phone =
+    process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || STORE_LOCATION.whatsapp;
   const clean = phone.replace(/\D/g, "");
   return `https://wa.me/${clean}?text=${encodeURIComponent(message)}`;
 }
 
 export function getMailtoUrl(subject: string, body: string) {
-  const email =
-    process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin@playjoytoys.com";
+  const email = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+  if (!email) return null;
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }

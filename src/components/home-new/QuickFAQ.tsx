@@ -1,71 +1,67 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { HiChevronDown } from "react-icons/hi2";
 import { faqs } from "@/data/faqs";
 import { cn } from "@/lib/utils";
-import { HomeSection } from "./HomeSection";
-import { homeCard, homeEyebrow, homeTitle } from "./homeStyles";
+import {
+  homeFullHeading,
+  homeFullInner,
+  homeFullSection,
+} from "./homeStyles";
 
-const preview = faqs.slice(0, 4);
+const preview = faqs.slice(0, 5);
 
 export function QuickFAQ() {
-  const [openId, setOpenId] = useState<string | null>(preview[0]?.id ?? null);
+  const [activeId, setActiveId] = useState<string>(preview[0]?.id ?? "");
+  const active = preview.find((f) => f.id === activeId) ?? preview[0];
 
   return (
-    <HomeSection tone="peach" dividerTo="light" waveFlip>
-      <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:items-start">
-        <div>
-          <p className={homeEyebrow}>FAQ</p>
-          <h2 className={homeTitle}>
-            Quick <span className="text-gradient">answers</span>
-          </h2>
-          <p className="mt-3 text-sm text-muted">
-            Everything you need before your first order.
-          </p>
-          <Link
-            href="/faq"
-            className="mt-5 inline-flex text-sm font-semibold text-secondary hover:underline"
-          >
-            Full FAQ →
-          </Link>
-        </div>
+    <section className={homeFullSection} aria-label="FAQ">
+      <div className="mb-5 px-4 text-center sm:mb-6 md:mb-8">
+        <h2 className={homeFullHeading}>Quick answers</h2>
+      </div>
 
-        <div className="space-y-2">
-          {preview.map((faq) => (
-            <div key={faq.id} className={homeCard}>
+      <div
+        className={`${homeFullInner} grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-6`}
+      >
+        <div className="flex flex-col gap-2">
+          {preview.map((faq, index) => {
+            const isActive = faq.id === activeId;
+            return (
               <button
+                key={faq.id}
                 type="button"
-                onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                className="flex w-full items-center justify-between gap-4 p-4 text-left font-display text-sm font-semibold text-foreground"
-              >
-                {faq.question}
-                <HiChevronDown
-                  className={cn(
-                    "h-5 w-5 shrink-0 text-secondary transition-transform",
-                    openId === faq.id && "rotate-180"
-                  )}
-                />
-              </button>
-              <div
+                onClick={() => setActiveId(faq.id)}
                 className={cn(
-                  "grid transition-all duration-300",
-                  openId === faq.id
-                    ? "grid-rows-[1fr] opacity-100"
-                    : "grid-rows-[0fr] opacity-0"
+                  "rounded-2xl border px-4 py-3.5 text-left text-sm font-semibold transition-colors md:rounded-3xl md:px-5 md:py-4 md:text-base",
+                  isActive
+                    ? "border-[#c8102e] bg-[#c8102e]/5 text-foreground"
+                    : "border-gray-100 bg-white text-muted hover:border-gray-200 hover:text-foreground"
                 )}
               >
-                <div className="overflow-hidden">
-                  <p className="px-4 pb-4 text-sm leading-relaxed text-muted">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
+                <span className="mr-2 font-display text-[#c8102e]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                {faq.question}
+              </button>
+            );
+          })}
         </div>
+
+        {active && (
+          <div className="flex min-h-[200px] flex-col justify-center rounded-2xl bg-gray-50 px-5 py-6 md:rounded-3xl md:px-8 md:py-10">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8102e]">
+              Answer
+            </p>
+            <h3 className="mt-3 font-display text-lg font-bold leading-snug text-foreground md:text-xl">
+              {active.question}
+            </h3>
+            <p className="mt-4 text-sm leading-relaxed text-muted md:text-base">
+              {active.answer}
+            </p>
+          </div>
+        )}
       </div>
-    </HomeSection>
+    </section>
   );
 }

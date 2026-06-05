@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 
 const badgeStyles: Record<string, string> = {
-  new: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
-  bestseller: "bg-amber-500/15 text-amber-700 dark:text-amber-300",
-  sale: "bg-rose-500/15 text-rose-700 dark:text-rose-300",
-  featured: "bg-purple-500/15 text-purple-700 dark:text-purple-300",
+  new: "bg-success/15 text-success",
+  bestseller: "bg-accent-yellow/25 text-foreground",
+  sale: "bg-[#c8102e]/12 text-[#c8102e]",
+  featured: "bg-[#c8102e]/12 text-[#c8102e]",
 };
 
 export function Badge({
@@ -19,7 +19,7 @@ export function Badge({
     <span
       className={cn(
         "rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide",
-        badgeStyles[key] || "bg-secondary/15 text-secondary",
+        badgeStyles[key] || "bg-[#c8102e]/12 text-[#c8102e]",
         className
       )}
     >

@@ -90,3 +90,44 @@ export function filterProducts(
 
   return result;
 }
+
+/** YouTube Shorts / watch URLs and Instagram Reels → embed iframe src */
+export function getVideoEmbedUrl(
+  url: string,
+  options?: { autoplay?: boolean }
+): string | null {
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+
+  const autoplay = options?.autoplay !== false;
+
+  const ytParams = autoplay
+    ? "?autoplay=1&mute=1&playsinline=1&loop=1&rel=0&modestbranding=1"
+    : "";
+
+  const shorts = trimmed.match(/youtube\.com\/shorts\/([^/?&]+)/);
+  if (shorts?.[1])
+    return `https://www.youtube.com/embed/${shorts[1]}${ytParams}`;
+
+  const watch = trimmed.match(/[?&]v=([^&]+)/);
+  if (watch?.[1])
+    return `https://www.youtube.com/embed/${watch[1]}${ytParams}`;
+
+  const youtuBe = trimmed.match(/youtu\.be\/([^/?&]+)/);
+  if (youtuBe?.[1])
+    return `https://www.youtube.com/embed/${youtuBe[1]}${ytParams}`;
+
+  const embed = trimmed.match(/youtube\.com\/embed\/([^/?&]+)/);
+  if (embed?.[1])
+    return `https://www.youtube.com/embed/${embed[1]}${ytParams}`;
+
+  const igReel = trimmed.match(/instagram\.com\/reel\/([^/?&]+)/);
+  if (igReel?.[1]) {
+    const id = igReel[1];
+    return autoplay
+      ? `https://www.instagram.com/reel/${id}/embed/?autoplay=1&mute=1`
+      : `https://www.instagram.com/reel/${id}/embed/captioned`;
+  }
+
+  return null;
+}

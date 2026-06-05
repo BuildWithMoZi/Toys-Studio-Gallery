@@ -1,65 +1,73 @@
 "use client";
 
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  HiHeart,
+  HiQuestionMarkCircle,
+  HiShoppingBag,
+  HiSquares2X2,
+} from "react-icons/hi2";
 import { FaWhatsapp } from "react-icons/fa";
+import { DEFAULT_WHATSAPP_GREETING, SITE, STORE_LOCATION } from "@/data/site";
 import { getWhatsAppUrl } from "@/lib/order";
-import { useGsapReveal } from "@/hooks/useGsapReveal";
-import { Button } from "@/components/ui/Button";
-import { HomeSection } from "./HomeSection";
-import { homeEyebrow, homeTitle } from "./homeStyles";
+import { handleNavLinkClick } from "@/lib/scroll";
+import {
+  homeFullInner,
+  homeFullSection,
+  homeFullTitle,
+} from "./homeStyles";
+
+const ctaLinks = [
+  { href: "/products", label: "Browse toys", icon: HiShoppingBag },
+  { href: "/categories", label: "Categories", icon: HiSquares2X2 },
+  { href: "/wishlist", label: "Wishlist", icon: HiHeart },
+  { href: "/faq", label: "FAQ", icon: HiQuestionMarkCircle },
+  {
+    href: getWhatsAppUrl(DEFAULT_WHATSAPP_GREETING),
+    label: "WhatsApp",
+    icon: FaWhatsapp,
+    external: true,
+  },
+];
 
 export function HomeCTA() {
-  const ref = useGsapReveal<HTMLDivElement>({ y: 24, duration: 0.8 });
+  const pathname = usePathname();
 
   return (
-    <HomeSection tone="light" className="pb-14 md:pb-16">
-      <div
-        ref={ref}
-        className="grid gap-8 md:grid-cols-2 md:items-center"
-      >
-        <div>
-          <p className={homeEyebrow}>Get started</p>
-          <h2 className={homeTitle}>
-            Ready for your next <span className="text-gradient">adventure?</span>
-          </h2>
-          <p className="mt-3 max-w-md text-sm text-muted">
-            Add to cart, order on WhatsApp, and we confirm within hours. Cash on
-            delivery available.
-          </p>
-        </div>
+    <section className={`${homeFullSection} pb-10 md:pb-12`} aria-label="Get started">
+      <h2 className={homeFullTitle}>Ready for your next adventure?</h2>
 
-        <div className="btn-action-row sm:flex sm:flex-wrap">
-          <Button href="/products" size="lg" layout="block">
-            Browse all toys
-          </Button>
-          <Button
-            href={getWhatsAppUrl("Hi! I'm ready to order from PlayJoy Toys.")}
-            variant="outline"
-            size="lg"
-            layout="block"
-          >
-            <FaWhatsapp className="h-4 w-4 shrink-0" />
-            WhatsApp order
-          </Button>
+      <div className={`${homeFullInner} mx-auto max-w-4xl`}>
+        <p className="text-center text-sm text-muted md:text-base">
+          {SITE.orderCta}. Call {STORE_LOCATION.phone} or message us on
+          WhatsApp — we confirm within hours.
+        </p>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2 sm:mt-8 sm:gap-3">
+          {ctaLinks.map(({ href, label, icon: Icon, external }) => (
+            <Link
+              key={label}
+              href={href}
+              scroll={false}
+              onClick={
+                external
+                  ? undefined
+                  : (e) => handleNavLinkClick(e, href, pathname)
+              }
+              {...(external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              className="inline-flex items-center gap-2 rounded-full border border-[#c8102e]/30 bg-white px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-[#c8102e] hover:bg-[#c8102e]/5 sm:px-5"
+            >
+              <Icon className="h-4 w-4 shrink-0 text-[#c8102e]" aria-hidden />
+              {label}
+            </Link>
+          ))}
         </div>
       </div>
-
-      <div className="mt-8 flex flex-wrap gap-5 border-t border-[var(--navbar-border)] pt-6">
-        {[
-          { href: "/categories", label: "Categories" },
-          { href: "/wishlist", label: "Wishlist" },
-          { href: "/faq", label: "FAQ" },
-          { href: "/contact", label: "Contact" },
-        ].map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="text-sm font-semibold text-muted transition-colors hover:text-secondary"
-          >
-            {link.label} →
-          </Link>
-        ))}
-      </div>
-    </HomeSection>
+    </section>
   );
 }
