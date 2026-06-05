@@ -96,7 +96,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
           title="What parents are saying"
         />
         <div className="mb-4 flex flex-wrap items-center gap-3 rounded-2xl border border-card-border bg-card/60 px-4 py-3">
-          <div className="flex items-center gap-1 text-amber-500">
+          <div className="flex items-center gap-1 text-accent-yellow">
             {Array.from({ length: 5 }).map((_, i) => (
               <HiStar
                 key={i}
@@ -119,7 +119,7 @@ function ProductDetailBelowFold({ product }: { product: Product }) {
         <ul className="grid gap-4 md:grid-cols-3">
           {reviews.map((review) => (
             <li key={review.id} className="card-toy flex flex-col p-5">
-              <div className="flex gap-0.5 text-amber-500">
+              <div className="flex gap-0.5 text-accent-yellow">
                 {Array.from({ length: review.rating }).map((_, j) => (
                   <HiStar key={j} className="h-4 w-4 fill-current" />
                 ))}
@@ -208,7 +208,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
           <h1 className="mt-4 font-display text-3xl font-bold md:text-4xl">
             {product.name}
           </h1>
-          <div className="mt-2 flex items-center gap-2 text-amber-500">
+          <div className="mt-2 flex items-center gap-2 text-accent-yellow">
             <HiStar className="h-5 w-5 fill-current" />
             <span className="font-bold text-foreground">{product.rating}</span>
             <span className="text-muted">({product.reviewCount} reviews)</span>

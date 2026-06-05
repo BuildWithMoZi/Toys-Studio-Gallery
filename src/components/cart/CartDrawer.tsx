@@ -135,7 +135,7 @@ export function CartDrawer() {
                       <button
                         type="button"
                         onClick={() => removeItem(item.product.id)}
-                        className="ml-auto text-rose-500 p-1"
+                        className="ml-auto text-danger p-1"
                       >
                         <HiTrash className="h-4 w-4" />
                       </button>

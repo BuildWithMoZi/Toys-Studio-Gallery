@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { categories } from "@/data/categories";
-import { CategoryIcon } from "@/components/home-new/CategoryBento";
+import { CategoryIcon } from "@/components/category/CategoryIcon";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
 import { cn } from "@/lib/utils";
 

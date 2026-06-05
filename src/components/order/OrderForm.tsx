@@ -5,6 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { HiEnvelope, HiXMark } from "react-icons/hi2";
 import { cn } from "@/lib/utils";
 import type { CartItem, OrderFormData, Product } from "@/types";
+import { STORE_LOCATION } from "@/data/site";
 import { buildOrderMessage, getWhatsAppUrl, getMailtoUrl } from "@/lib/order";
 import { Button } from "@/components/ui/Button";
 import { useCart } from "@/context/CartContext";
@@ -76,10 +77,11 @@ export function OrderForm({
       }
 
       if (data.fallback) {
-        window.location.href = getMailtoUrl(
+        const mailto = getMailtoUrl(
           `New Order from ${form.name}`,
           orderMsg
         );
+        if (mailto) window.location.href = mailto;
       }
 
       setStatus("success");
@@ -93,10 +95,11 @@ export function OrderForm({
       setMessage(
         "WhatsApp opened with your order! Email will open as backup if SMTP is not configured."
       );
-      window.location.href = getMailtoUrl(
+      const mailto = getMailtoUrl(
         `New Order from ${form.name}`,
         orderMsg
       );
+      if (mailto) window.location.href = mailto;
       onSuccess?.();
     }
   };
@@ -137,7 +140,7 @@ export function OrderForm({
             value={form.phone}
             onChange={(e) => update("phone", e.target.value)}
             className="input-field"
-            placeholder="+91 98765 43210"
+            placeholder={STORE_LOCATION.phone}
           />
         </Field>
       </div>
@@ -188,7 +191,7 @@ export function OrderForm({
       </Field>
 
       {status === "success" && (
-        <div className="rounded-2xl bg-emerald-500/15 p-4 text-emerald-800 dark:text-emerald-200 text-sm font-medium">
+        <div className="rounded-2xl bg-success/15 p-4 text-success text-sm font-medium">
           {message}
         </div>
       )}

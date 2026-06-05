@@ -1,95 +1,124 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { handleNavLinkClick } from "@/lib/scroll";
-import { cn } from "@/lib/utils";
 import {
-  FaFacebook,
   FaInstagram,
-  FaTwitter,
   FaWhatsapp,
 } from "react-icons/fa";
 import {
-  HiEnvelope,
-  HiGift,
-  HiHeart,
+  HiArrowTopRightOnSquare,
   HiMapPin,
   HiPhone,
-  HiCheckCircle,
 } from "react-icons/hi2";
+import {
+  DEFAULT_WHATSAPP_GREETING,
+  getDirectionsUrl,
+  SITE,
+  STORE_LOCATION,
+} from "@/data/site";
+import { getWhatsAppUrl } from "@/lib/order";
+import { handleNavLinkClick } from "@/lib/scroll";
+import { cn } from "@/lib/utils";
+import { SiteLogo } from "./SiteLogo";
 
-const quickLinks: [string, string][] = [
+const FooterMap = dynamic(
+  () => import("./FooterMap").then((mod) => mod.FooterMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="h-56 animate-pulse rounded-2xl bg-gray-100 sm:h-64 md:h-72"
+        aria-hidden
+      />
+    ),
+  }
+);
+
+const directionsUrl = getDirectionsUrl();
+
+const shopLinks: [string, string][] = [
   ["Shop All", "/products"],
   ["New Arrivals", "/products?badge=new"],
   ["Best Sellers", "/products?badge=bestseller"],
   ["Offers", "/products?badge=sale"],
-  ["FAQ", "/faq"],
 ];
 
-/** Site-wide footer — use in root layout or any page. */
+const helpLinks: [string, string][] = [
+  ["FAQ", "/faq"],
+  ["About", "/about"],
+  ["Contact", "/contact"],
+  ["Categories", "/categories"],
+];
+
+const socialLinks = [
+  {
+    Icon: FaInstagram,
+    label: "Instagram",
+    href: SITE.instagram.url,
+  },
+  {
+    Icon: FaWhatsapp,
+    label: "WhatsApp",
+    href: getWhatsAppUrl(DEFAULT_WHATSAPP_GREETING),
+  },
+];
+
+/** Site-wide footer — clean full-width layout matching home sections. */
 export function Footer({ className }: { className?: string }) {
   const pathname = usePathname();
 
   return (
     <footer
       className={cn(
-        "relative mt-20 shrink-0 overflow-hidden bg-gradient-to-b from-primary/50 to-primary dark:from-card dark:to-background",
+        "w-full shrink-0 border-t border-gray-100 bg-white",
         className
       )}
     >
-      <div
-        className="pointer-events-none absolute -top-16 left-1/2 z-0 h-32 w-[120%] -translate-x-1/2 rounded-[50%] bg-background"
-        aria-hidden
-      />
+      <div className="px-2 py-10 sm:px-3 md:py-12 lg:px-4">
+        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+          <Link
+            href="/"
+            scroll={false}
+            onClick={(e) => handleNavLinkClick(e, "/", pathname)}
+            className="transition-opacity hover:opacity-90"
+          >
+            <SiteLogo className="h-14 md:h-16" />
+          </Link>
+          <p className="mt-4 max-w-md text-sm text-muted">
+            {SITE.tagline} — {SITE.description}. Based in {STORE_LOCATION.address}.
+          </p>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-8 pt-14 md:px-6 md:pt-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <Link
-              href="/"
-              scroll={false}
-              onClick={(e) => handleNavLinkClick(e, "/", pathname)}
-              className="flex items-center gap-2"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/15 text-secondary">
-                <HiGift className="h-6 w-6" />
-              </span>
-              <span className="font-display text-2xl font-bold text-gradient">
-                PlayJoy Toys
-              </span>
-            </Link>
-            <p className="mt-4 text-muted">
-              Where every toy sparks joy! Premium, safe, and magical toys for
-              kids of all ages.
-            </p>
-            <div className="mt-4 flex gap-3">
-              {[FaInstagram, FaFacebook, FaTwitter, FaWhatsapp].map(
-                (Icon, i) => (
-                  <a
-                    key={i}
-                    href="#"
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/10 text-secondary transition-all hover:scale-110 hover:bg-secondary hover:text-white"
-                    aria-label="Social link"
-                  >
-                    <Icon className="h-5 w-5" />
-                  </a>
-                )
-              )}
-            </div>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {socialLinks.map(({ Icon, label, href }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-600 transition-colors hover:border-[#c8102e] hover:text-[#c8102e]"
+                aria-label={label}
+              >
+                <Icon className="h-4 w-4" />
+              </a>
+            ))}
           </div>
+        </div>
 
+        <div className="mx-auto mt-10 grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
           <div>
-            <h4 className="font-display text-lg font-bold">Quick Links</h4>
-            <ul className="mt-4 space-y-2">
-              {quickLinks.map(([label, href]) => (
+            <h4 className="text-center font-display text-sm font-bold uppercase tracking-wider text-foreground sm:text-left">
+              Shop
+            </h4>
+            <ul className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-2 sm:justify-start">
+              {shopLinks.map(([label, href]) => (
                 <li key={href}>
                   <Link
                     href={href}
                     scroll={false}
                     onClick={(e) => handleNavLinkClick(e, href, pathname)}
-                    className="text-muted transition-colors hover:text-secondary"
+                    className="text-sm text-muted transition-colors hover:text-[#c8102e]"
                   >
                     {label}
                   </Link>
@@ -99,84 +128,89 @@ export function Footer({ className }: { className?: string }) {
           </div>
 
           <div>
-            <h4 className="font-display text-lg font-bold">Contact</h4>
-            <ul className="mt-4 space-y-3 text-muted">
-              <li className="flex items-center gap-2">
-                <HiPhone className="h-5 w-5 shrink-0 text-secondary" />
-                +91 98765 43210
-              </li>
-              <li className="flex items-center gap-2">
-                <HiEnvelope className="h-5 w-5 shrink-0 text-secondary" />
-                hello@playjoytoys.com
-              </li>
-              <li className="flex items-start gap-2">
-                <HiMapPin className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
-                123 Toy Street, Mumbai, India
-              </li>
+            <h4 className="text-center font-display text-sm font-bold uppercase tracking-wider text-foreground sm:text-left">
+              Help
+            </h4>
+            <ul className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-2 sm:justify-start">
+              {helpLinks.map(([label, href]) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    scroll={false}
+                    onClick={(e) => handleNavLinkClick(e, href, pathname)}
+                    className="text-sm text-muted transition-colors hover:text-[#c8102e]"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-display text-lg font-bold">Newsletter</h4>
-            <p className="mt-2 text-sm text-muted">
-              Get surprise deals & new toy alerts!
-            </p>
-            <NewsletterForm />
+          <div className="sm:col-span-2 lg:col-span-1">
+            <h4 className="text-center font-display text-sm font-bold uppercase tracking-wider text-foreground sm:text-left">
+              Contact
+            </h4>
+            <ul className="mt-3 space-y-2 text-sm text-muted">
+              <li className="flex items-center justify-center gap-2 sm:justify-start">
+                <HiPhone className="h-4 w-4 shrink-0 text-[#c8102e]" />
+                <a href={STORE_LOCATION.phoneTel} className="hover:text-[#c8102e]">
+                  {STORE_LOCATION.phone}
+                </a>
+              </li>
+              <li className="flex items-center justify-center gap-2 sm:justify-start">
+                <FaInstagram className="h-4 w-4 shrink-0 text-[#c8102e]" />
+                <a
+                  href={SITE.instagram.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#c8102e]"
+                >
+                  {SITE.instagram.display}
+                </a>
+              </li>
+              <li className="flex items-start justify-center gap-2 sm:justify-start">
+                <HiMapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c8102e]" />
+                {STORE_LOCATION.addressFull}
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-card-border pt-8 text-sm text-muted md:flex-row">
-          <p className="flex items-center justify-center gap-1.5 md:justify-start">
-            © {new Date().getFullYear()} PlayJoy Toys. Made with
-            <HiHeart className="inline h-4 w-4 text-rose-500" aria-hidden />
-            for kids.
-          </p>
+        <div className="mx-auto mt-10 max-w-5xl">
+          <h4 className="text-center font-display text-sm font-bold uppercase tracking-wider text-foreground">
+            Find us
+          </h4>
+          <div className="mt-4 overflow-hidden rounded-2xl border border-gray-100 shadow-sm md:rounded-3xl">
+            <div className="relative h-56 sm:h-64 md:h-72">
+              <FooterMap />
+            </div>
+            <a
+              href={directionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 border-t border-gray-100 bg-gray-50 px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-white hover:text-[#c8102e]"
+            >
+              Get directions
+              <HiArrowTopRightOnSquare className="h-4 w-4 shrink-0" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-gray-100 bg-gray-50 px-4 py-4">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 text-center text-xs text-muted sm:flex-row sm:text-left sm:text-sm">
+          <p>© {new Date().getFullYear()} Safal&apos;s Toy Studio. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link href="/about" className="hover:text-secondary">
+            <Link href="/about" className="hover:text-[#c8102e]">
               Privacy
             </Link>
-            <Link href="/about" className="hover:text-secondary">
+            <Link href="/about" className="hover:text-[#c8102e]">
               Terms
             </Link>
           </div>
         </div>
       </div>
     </footer>
-  );
-}
-
-function NewsletterForm() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "success">("idle");
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setStatus("success");
-    setEmail("");
-    setTimeout(() => setStatus("idle"), 4000);
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="your@email.com"
-        className="flex-1 rounded-full border border-card-border bg-card px-4 py-2.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-secondary"
-      />
-      <button
-        type="submit"
-        className="flex min-h-11 min-w-[4.5rem] touch-manipulation items-center justify-center rounded-2xl bg-secondary px-4 py-2.5 text-sm font-bold text-white transition-all active:scale-[0.98] hover:bg-secondary/90 sm:min-h-0 sm:rounded-full sm:hover:scale-105"
-      >
-        {status === "success" ? (
-          <HiCheckCircle className="h-5 w-5" aria-hidden />
-        ) : (
-          "Join"
-        )}
-      </button>
-    </form>
   );
 }

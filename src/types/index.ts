@@ -54,13 +54,3 @@ export interface FAQ {
   question: string;
   answer: string;
 }
-
-export type AchievementIconKey = "families" | "trophy" | "speed" | "safety";
-
-export interface Achievement {
-  id: string;
-  title: string;
-  description: string;
-  iconKey: AchievementIconKey;
-  color: string;
-}

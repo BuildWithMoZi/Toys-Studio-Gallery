@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Fredoka, Nunito } from "next/font/google";
+import { SITE_META } from "@/data/site";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { LayoutNavbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
@@ -20,15 +22,14 @@ const fredoka = Fredoka({
 
 export const metadata: Metadata = {
   title: {
-    default: "PlayJoy Toys — Magical Toys for Happy Kids",
-    template: "%s | PlayJoy Toys",
+    default: SITE_META.title,
+    template: SITE_META.titleTemplate,
   },
-  description:
-    "Premium kids-friendly toy shop. Educational toys, plushies, games & more. Order directly via WhatsApp — fast delivery, safe & fun!",
-  keywords: ["toys", "kids toys", "educational toys", "plush toys", "online toy shop"],
+  description: SITE_META.description,
+  keywords: [...SITE_META.keywords],
   openGraph: {
-    title: "PlayJoy Toys",
-    description: "Where every toy sparks joy!",
+    title: SITE_META.openGraph.title,
+    description: SITE_META.openGraph.description,
     type: "website",
   },
 };
@@ -44,6 +45,8 @@ export default function RootLayout({
         className={`${nunito.variable} ${fredoka.variable} flex min-h-screen flex-col antialiased font-sans`}
       >
         <AppProviders>
+          <AnnouncementBar />
+          <div className="h-7 shrink-0" aria-hidden />
           <LayoutNavbar />
           <main className="flex-1">{children}</main>
           <Footer />

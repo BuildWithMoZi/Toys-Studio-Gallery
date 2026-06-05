@@ -36,7 +36,7 @@ export function ProductCard({ product }: { product: Product }) {
             <span />
           )}
           {discount > 0 && (
-            <span className="shrink-0 rounded-full bg-rose-500 px-1.5 py-0.5 text-[9px] font-bold text-white md:px-2 md:text-xs">
+            <span className="shrink-0 rounded-full bg-danger px-1.5 py-0.5 text-[9px] font-bold text-white md:px-2 md:text-xs">
               -{discount}%
             </span>
           )}
@@ -52,7 +52,7 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="mt-0.5 hidden text-sm text-muted line-clamp-2 md:block">
           {product.description}
         </p>
-        <div className="mt-1 flex items-center gap-1 text-amber-500 md:mt-2">
+        <div className="mt-1 flex items-center gap-1 text-accent-yellow md:mt-2">
           <HiStar className="h-3 w-3 fill-current md:h-4 md:w-4" />
           <span className="text-[10px] font-semibold text-foreground md:text-sm">
             {product.rating}
@@ -78,7 +78,7 @@ export function ProductCard({ product }: { product: Product }) {
               onClick={() => toggle(product)}
               className={cn(
                 "flex h-8 w-8 items-center justify-center rounded-full border border-[var(--card-border)] bg-card md:h-9 md:w-9",
-                wishlisted && "text-rose-500"
+                wishlisted && "text-secondary"
               )}
               aria-label="Toggle wishlist"
             >

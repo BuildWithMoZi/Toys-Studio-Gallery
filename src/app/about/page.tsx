@@ -3,13 +3,14 @@ import Image from "next/image";
 import { FaWhatsapp } from "react-icons/fa";
 import { HiShieldCheck, HiTruck } from "react-icons/hi2";
 import { Button } from "@/components/ui/Button";
+import { SITE, STORE_LOCATION } from "@/data/site";
 import { toyImage } from "@/data/images";
 import { PAGE_SHELL } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: "Learn about PlayJoy Toys — our mission to bring joy to every child.",
+  description: `Learn about ${SITE.name} — ${SITE.tagline}. ${SITE.description}.`,
 };
 
 const features = [
@@ -34,7 +35,7 @@ export default function AboutPage() {
   return (
     <div className={cn(PAGE_SHELL, "max-w-4xl")}>
       <h1 className="font-display text-4xl font-bold text-gradient text-center">
-        About PlayJoy Toys
+        About {SITE.name}
       </h1>
       <div className="relative mx-auto mt-10 aspect-video max-w-2xl overflow-hidden rounded-3xl card-toy">
         <Image
@@ -46,19 +47,22 @@ export default function AboutPage() {
       </div>
       <div className="mt-10 space-y-6 text-muted leading-relaxed">
         <p>
-          Welcome to <strong className="text-foreground">PlayJoy Toys</strong> — where
-          imagination meets quality! Founded with a simple mission: every child
-          deserves safe, fun, and enriching toys that spark creativity and joy.
+          Welcome to <strong className="text-foreground">{SITE.name}</strong> —{" "}
+          {SITE.tagline.toLowerCase()} for every age! Based in{" "}
+          <strong className="text-foreground">{STORE_LOCATION.address}</strong>,
+          we are a {SITE.category.toLowerCase()} shop built around fun, gifts,
+          and RC toys that kids love.
         </p>
         <p>
-          We hand-pick every product for safety, durability, and play value. From
-          cuddly plush companions to brain-boosting educational kits, our
-          collection is curated by parents, for parents.
+          We hand-pick every product for safety, durability, and play value —
+          from cuddly plush companions to remote-control toys and brain-boosting
+          educational kits. {SITE.description}.
         </p>
         <p>
-          Ordering is simple — add to cart, fill your details, and we confirm via
-          WhatsApp within hours. Cash on delivery available nationwide. No
-          complicated checkout, just happy kids!
+          Ordering is simple — browse our collection, then {SITE.orderCta.toLowerCase()}.
+          Reach us on WhatsApp at {STORE_LOCATION.phone} or visit us in Mahatma
+          Nagar, Nashik. Cash on delivery available. No complicated checkout,
+          just happy kids!
         </p>
       </div>
       <div className="mt-10 grid gap-4 text-center sm:grid-cols-3">
