@@ -1,4 +1,0 @@
-User-Agent: *
-Allow: /
-
-Sitemap: https://buildwithmozi.github.io/Toys-Studio-Gallery/sitemap.xml

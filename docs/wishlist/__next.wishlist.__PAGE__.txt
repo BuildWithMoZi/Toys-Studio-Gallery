@@ -1,9 +1,0 @@
-1:"$Sreact.fragment"
-2:I[47257,["/Toys-Studio-Gallery/_next/static/chunks/0zgi~vn~7b.-f.js","/Toys-Studio-Gallery/_next/static/chunks/0d3shmwh5_nmn.js","/Toys-Studio-Gallery/_next/static/chunks/0qi1c7gy53mrc.js","/Toys-Studio-Gallery/_next/static/chunks/0247ea-zd4dzi.js","/Toys-Studio-Gallery/_next/static/chunks/0hh8xt~-_e5hq.js","/Toys-Studio-Gallery/_next/static/chunks/07qdyu6tbm3g3.js"],"ClientPageRoot"]
-3:I[84949,["/Toys-Studio-Gallery/_next/static/chunks/0zgi~vn~7b.-f.js","/Toys-Studio-Gallery/_next/static/chunks/0d3shmwh5_nmn.js","/Toys-Studio-Gallery/_next/static/chunks/0qi1c7gy53mrc.js","/Toys-Studio-Gallery/_next/static/chunks/0247ea-zd4dzi.js","/Toys-Studio-Gallery/_next/static/chunks/0hh8xt~-_e5hq.js","/Toys-Studio-Gallery/_next/static/chunks/07qdyu6tbm3g3.js","/Toys-Studio-Gallery/_next/static/chunks/0es7p4-5g4.pd.js"],"default"]
-6:I[97367,["/Toys-Studio-Gallery/_next/static/chunks/0zgi~vn~7b.-f.js","/Toys-Studio-Gallery/_next/static/chunks/0d3shmwh5_nmn.js","/Toys-Studio-Gallery/_next/static/chunks/0qi1c7gy53mrc.js","/Toys-Studio-Gallery/_next/static/chunks/0247ea-zd4dzi.js","/Toys-Studio-Gallery/_next/static/chunks/0hh8xt~-_e5hq.js","/Toys-Studio-Gallery/_next/static/chunks/07qdyu6tbm3g3.js"],"OutletBoundary"]
-7:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/Toys-Studio-Gallery/_next/static/chunks/0es7p4-5g4.pd.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"yCQCtQs3Tk8b8rKeMcybB"}
-4:{}
-5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
-8:null
