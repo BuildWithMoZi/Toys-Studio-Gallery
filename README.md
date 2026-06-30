@@ -1,6 +1,6 @@
-# Safal's Toy Studio
+# craftdesk Toy's
 
-Modern toy store for **Safal's Toy Studio** (Nashik) — built with **Next.js**, **TypeScript**, **Tailwind CSS**, and **React Icons**.
+Modern toy store for **craftdesk Toy's** (Nashik) — built with **Next.js**, **TypeScript**, **Tailwind CSS**, and **React Icons**.
 
 ## Features
 

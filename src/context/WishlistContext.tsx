@@ -18,7 +18,7 @@ interface WishlistContextValue {
 }
 
 const WishlistContext = createContext<WishlistContextValue | null>(null);
-const STORAGE_KEY = "safal-toy-studio-wishlist";
+const STORAGE_KEY = "craftdesk-toys-wishlist";
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<Product[]>([]);

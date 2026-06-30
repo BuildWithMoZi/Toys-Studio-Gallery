@@ -1,16 +1,16 @@
-/** Safal's Toy Studio — shared business details (@safal_toy_studio_sts) */
+/** craftdesk Toy's — shared business details (@craftdesk_toys) */
 
 export const SITE = {
-  name: "Safal's Toy Studio",
-  shortName: "Safal Toy Studio STS",
+  name: "craftdesk Toy's",
+  shortName: "craftdesk Toy's",
   tagline: "Fun • Gifts • RC Toys",
   description: "Premium toys for every age",
   category: "Shopping & retail",
   orderCta: "DM / Call for orders",
   instagram: {
-    handle: "safal_toy_studio_sts",
-    display: "@safal_toy_studio_sts",
-    url: "https://www.instagram.com/safal_toy_studio_sts/",
+    handle: "craftdesk_toys",
+    display: "@craftdesk_toys",
+    url: "https://www.instagram.com/craftdesk_toys/",
   },
 } as const;
 
@@ -41,7 +41,7 @@ export const SITE_META = {
     "RC toys",
     "gifts",
     "Nashik toy shop",
-    "Safal Toy Studio",
+    "craftdesk Toy's",
     "kids toys",
     "Mahatma Nagar Nashik",
   ],

@@ -200,7 +200,7 @@ export function Footer({ className }: { className?: string }) {
 
       <div className="border-t border-gray-100 bg-gray-50 px-4 py-4">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 text-center text-xs text-muted sm:flex-row sm:text-left sm:text-sm">
-          <p>© {new Date().getFullYear()} Safal&apos;s Toy Studio. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/about" className="hover:text-[#c8102e]">
               Privacy

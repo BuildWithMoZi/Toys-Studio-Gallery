@@ -23,7 +23,7 @@ export const testimonials: Testimonial[] = [
     name: "Anita Desai",
     role: "Teacher",
     avatar: toyImage(17),
-    text: "Educational toys are top-notch. I recommend Safal's Toy Studio to all parents in my classroom. Trustworthy and fun!",
+    text: "Educational toys are top-notch. I recommend craftdesk Toy's to all parents in my classroom. Trustworthy and fun!",
     rating: 5,
   },
   {

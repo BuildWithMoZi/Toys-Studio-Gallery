@@ -43,24 +43,11 @@ export const metadata: Metadata = {
     url: absoluteUrl("/"),
     siteName: SITE.name,
     locale: "en_IN",
-    images: [
-      {
-        url: absoluteUrl("/logo.png"),
-        width: 512,
-        height: 512,
-        alt: SITE.name,
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_META.openGraph.title,
     description: SITE_META.openGraph.description,
-    images: [absoluteUrl("/logo.png")],
-  },
-  icons: {
-    icon: absoluteUrl("/logo.png"),
-    apple: absoluteUrl("/logo.png"),
   },
 };
 
